@@ -1,0 +1,3100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jeeva Photography — Studio Admin Portal</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #d4b483;
+      --gold-l: #e8d0a0;
+      --gold-d: #a88b5c;
+      --gold-glow: rgba(212, 180, 131, 0.18);
+      --bg: #0d1008;
+      --bgp: #141a0e;
+      --bgc: #1a2212;
+      --bgc2: #212c17;
+      --bgi: #0f150a;
+      --bdr: rgba(212, 180, 131, 0.15);
+      --bdr2: rgba(212, 180, 131, 0.35);
+      --t: #f5f0e8;
+      --t2: rgba(245, 240, 232, 0.6);
+      --t3: rgba(245, 240, 232, 0.35);
+      --grn: #27ae60;
+      --grns: rgba(39, 174, 96, 0.15);
+      --red: #e74c3c;
+      --reds: rgba(231, 76, 60, 0.15);
+      --blu: #3498db;
+      --blus: rgba(52, 152, 219, 0.15);
+      --org: #e67e22;
+      --orgs: rgba(230, 126, 34, 0.15);
+      --sf: 'Cormorant Garamond', Georgia, serif;
+      --sn: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --sw: 270px;
+      --r: 14px;
+      --rs: 8px;
+    }
+    body {
+      font-family: var(--sn);
+      background: var(--bg);
+      color: var(--t);
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: var(--gold); text-decoration: none; }
+    button, input, select, textarea { font-family: inherit; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(212, 180, 131, 0.3); border-radius: 4px; }
+
+    /* LOGIN SCREEN */
+    #ls {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      background-image: radial-gradient(ellipse at 50% 10%, rgba(212, 180, 131, 0.12), transparent 70%);
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+      padding: 1.5rem;
+    }
+    #ls.h { opacity: 0; pointer-events: none; }
+    .lb {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bgp);
+      border: 1px solid var(--bdr2);
+      border-radius: 22px;
+      padding: 3rem 2.5rem;
+      text-align: center;
+      box-shadow: 0 10px 60px rgba(0,0,0,0.6), 0 0 80px rgba(212, 180, 131, 0.08);
+      position: relative;
+    }
+    .la {
+      width: 74px;
+      height: 74px;
+      background: linear-gradient(135deg, var(--gold-d), var(--gold));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.4rem;
+      font-family: var(--sf);
+      font-size: 2rem;
+      color: var(--bg);
+      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(212, 180, 131, 0.25);
+    }
+    .lt { font-family: var(--sf); font-size: 2.1rem; color: var(--gold); margin-bottom: 0.2rem; font-weight: 700; }
+    .ls2 { color: var(--t2); font-size: 0.88rem; margin-bottom: 2rem; }
+    .lf { margin-bottom: 1.2rem; text-align: left; }
+    .ll { font-size: 0.78rem; color: var(--t2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.45rem; display: block; font-weight: 600; }
+    .li {
+      width: 100%;
+      padding: 0.85rem 1.1rem;
+      background: var(--bgi);
+      border: 1px solid var(--bdr);
+      border-radius: var(--rs);
+      color: var(--t);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .li:focus { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-glow); }
+    .lbt {
+      width: 100%;
+      padding: 0.95rem;
+      background: linear-gradient(135deg, var(--gold-d), var(--gold));
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: var(--rs);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lbt:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(212, 180, 131, 0.3); }
+    .ler { color: var(--red); font-size: 0.84rem; margin-top: 0.85rem; display: none; }
+    .ler.on { display: block; }
+    .login-hint { margin-top: 1.5rem; font-size: 0.76rem; color: var(--t3); }
+
+    /* MAIN APP LAYOUT */
+    #app { display: none; min-height: 100vh; }
+    #app.on { display: flex; }
+
+    /* SIDEBAR */
+    .sb {
+      width: var(--sw);
+      min-height: 100vh;
+      background: var(--bgp);
+      border-right: 1px solid var(--bdr);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 100;
+      overflow-y: auto;
+    }
+    .sbl {
+      padding: 1.5rem 1.4rem 1.2rem;
+      border-bottom: 1px solid var(--bdr);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .sbl-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--gold-d), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--sf);
+      font-size: 1.1rem;
+      color: var(--bg);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .sbt { font-family: var(--sf); font-size: 1.35rem; color: var(--gold); display: block; line-height: 1.1; font-weight: 700; }
+    .sbs { font-size: 0.7rem; color: var(--t2); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-top: 2px; }
+    
+    .sbn { flex: 1; padding: 1.2rem 0.75rem; }
+    .ns { font-size: 0.68rem; color: var(--t3); text-transform: uppercase; letter-spacing: 0.12em; padding: 0.7rem 0.75rem 0.3rem; font-weight: 700; }
+    .sl {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 0.9rem;
+      border-radius: var(--rs);
+      color: var(--t2);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 3px;
+      user-select: none;
+    }
+    .sl svg { flex-shrink: 0; opacity: 0.7; transition: opacity 0.2s; }
+    .sl:hover { background: rgba(212, 180, 131, 0.08); color: var(--t); }
+    .sl:hover svg { opacity: 1; }
+    .sl.ac {
+      background: linear-gradient(90deg, rgba(212, 180, 131, 0.18), rgba(212, 180, 131, 0.05));
+      color: var(--gold);
+      border-left: 3px solid var(--gold);
+      padding-left: calc(0.9rem - 3px);
+      font-weight: 600;
+    }
+    .sl.ac svg { opacity: 1; color: var(--gold); }
+    .sbb {
+      margin-left: auto;
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 100px;
+    }
+    .sbb.muted { background: rgba(212, 180, 131, 0.15); color: var(--gold); }
+
+    .sbf {
+      padding: 1.1rem 1.25rem;
+      border-top: 1px solid var(--bdr);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(0,0,0,0.15);
+    }
+    .sba {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-d), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--sf);
+      font-size: 1.05rem;
+      color: var(--bg);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .sbfi { flex: 1; min-width: 0; }
+    .sbfn { font-size: 0.85rem; font-weight: 600; color: var(--t); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sbfr { font-size: 0.72rem; color: var(--t2); }
+    .lob {
+      background: none;
+      border: none;
+      color: var(--t2);
+      padding: 0.4rem;
+      border-radius: var(--rs);
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+    }
+    .lob:hover { color: var(--red); background: var(--reds); }
+
+    /* MAIN CONTAINER */
+    .mc {
+      margin-left: var(--sw);
+      flex: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+    }
+    .tb {
+      height: 68px;
+      background: var(--bgp);
+      border-bottom: 1px solid var(--bdr);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+    }
+    .tb-left { display: flex; align-items: center; gap: 1rem; }
+    .tbt { font-family: var(--sf); font-size: 1.45rem; font-weight: 700; color: var(--t); }
+    .tbr { display: flex; align-items: center; gap: 1rem; }
+    .tbb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--t2); background: var(--bgc); padding: 0.35rem 0.8rem; border-radius: 100px; border: 1px solid var(--bdr); }
+    .liv { width: 8px; height: 8px; border-radius: 50%; background: var(--grn); box-shadow: 0 0 8px var(--grn); animation: pls 2s infinite; }
+    @keyframes pls { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
+    
+    .vsb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(212, 180, 131, 0.12);
+      border: 1px solid var(--bdr2);
+      color: var(--gold);
+      font-size: 0.82rem;
+      padding: 0.45rem 1rem;
+      border-radius: 100px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .vsb:hover { background: rgba(212, 180, 131, 0.22); transform: translateY(-1px); }
+
+    .pc { padding: 2rem; flex: 1; }
+    .pn { display: none; animation: fadeIn 0.25s ease-out; }
+    .pn.ac { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* STATS WIDGETS */
+    .sr { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+    .sx {
+      background: var(--bgc);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      padding: 1.4rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .sx:hover { transform: translateY(-2px); border-color: var(--bdr2); }
+    .sx::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold-d), var(--gold));
+    }
+    .sxl { font-size: 0.76rem; color: var(--t2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6rem; font-weight: 600; }
+    .sxv { font-family: var(--sf); font-size: 2.2rem; color: var(--gold); font-weight: 700; line-height: 1; margin-bottom: 0.35rem; }
+    .sxs { font-size: 0.78rem; color: var(--t3); }
+
+    /* SECTION HEADERS & BUTTONS */
+    .sh {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .sht { font-family: var(--sf); font-size: 1.6rem; color: var(--t); font-weight: 700; }
+    .shs { font-size: 0.84rem; color: var(--t2); margin-top: 0.15rem; }
+    .sha { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+
+    .bg {
+      background: linear-gradient(135deg, var(--gold-d), var(--gold));
+      color: var(--bg);
+      border: none;
+      padding: 0.65rem 1.3rem;
+      border-radius: var(--rs);
+      font-weight: 700;
+      font-size: 0.84rem;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .bg:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(212, 180, 131, 0.25); }
+    .bo {
+      background: rgba(212, 180, 131, 0.06);
+      border: 1px solid var(--bdr2);
+      color: var(--gold);
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--rs);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .bo:hover { background: rgba(212, 180, 131, 0.15); transform: translateY(-1px); }
+    .bd {
+      background: var(--reds);
+      border: 1px solid rgba(231, 76, 60, 0.35);
+      color: #ff6b6b;
+      padding: 0.55rem 1.1rem;
+      border-radius: var(--rs);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .bd:hover { background: rgba(231, 76, 60, 0.3); color: #fff; }
+    .bsm { padding: 0.35rem 0.75rem; font-size: 0.78rem; border-radius: 6px; }
+
+    /* SEARCH & FILTERS BAR */
+    .filter-bar {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .si-wrap { position: relative; flex: 1; min-width: 240px; }
+    .si-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--t3); pointer-events: none; }
+    .si {
+      width: 100%;
+      padding: 0.7rem 1rem 0.7rem 2.6rem;
+      background: var(--bgc);
+      border: 1px solid var(--bdr);
+      border-radius: var(--rs);
+      color: var(--t);
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .si:focus { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-glow); }
+    .fs {
+      padding: 0.7rem 1rem;
+      background: var(--bgc);
+      border: 1px solid var(--bdr);
+      border-radius: var(--rs);
+      color: var(--t);
+      font-size: 0.88rem;
+      outline: none;
+      cursor: pointer;
+    }
+    .fs option { background: var(--bgp); color: var(--t); }
+    
+    .filter-pills { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 2px; }
+    .filter-pill {
+      padding: 0.45rem 1rem;
+      background: var(--bgc);
+      border: 1px solid var(--bdr);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      color: var(--t2);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .filter-pill:hover { border-color: var(--gold); color: var(--t); }
+    .filter-pill.ac { background: var(--gold); color: var(--bg); border-color: var(--gold); font-weight: 700; }
+
+    /* TABLES */
+    .tw {
+      background: var(--bgc);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      overflow-x: auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .dt { width: 100%; border-collapse: collapse; min-width: 700px; }
+    .dt th {
+      background: rgba(212, 180, 131, 0.08);
+      padding: 0.85rem 1.2rem;
+      text-align: left;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid var(--bdr);
+    }
+    .dt td {
+      padding: 0.95rem 1.2rem;
+      font-size: 0.88rem;
+      border-bottom: 1px solid rgba(212, 180, 131, 0.06);
+      vertical-align: middle;
+    }
+    .dt tr:last-child td { border-bottom: none; }
+    .dt tr:hover td { background: var(--bgc2); }
+
+    /* STATUS BADGES */
+    .stb { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.7rem; border-radius: 100px; font-size: 0.74rem; font-weight: 600; }
+    .st-n { background: var(--blus); color: #5dade2; }
+    .st-c { background: var(--orgs); color: var(--org); }
+    .st-k { background: var(--grns); color: var(--grn); }
+    .st-x { background: rgba(255, 255, 255, 0.08); color: var(--t2); }
+    .std { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    /* GALLERY GRIDS */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.4rem;
+    }
+    .gallery-card {
+      background: var(--bgc);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+    .gallery-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--bdr2);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+    .gallery-thumb-wrap {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      background: #000;
+      overflow: hidden;
+    }
+    .gallery-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .gallery-card:hover .gallery-thumb { transform: scale(1.04); }
+    .gallery-tag-pill {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      background: rgba(13, 16, 8, 0.85);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--bdr);
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 100px;
+    }
+    .gallery-format-pill {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: rgba(0,0,0,0.7);
+      color: var(--t2);
+      font-size: 0.68rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .gallery-card-body {
+      padding: 1.2rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .gallery-card-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--t);
+      margin-bottom: 0.4rem;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .gallery-card-meta {
+      font-size: 0.78rem;
+      color: var(--t2);
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .gallery-card-actions {
+      display: flex;
+      gap: 0.5rem;
+      border-top: 1px solid var(--bdr);
+      padding-top: 0.9rem;
+    }
+
+    /* VIDEO CARDS */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .video-admin-card {
+      background: var(--bgc);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .video-admin-card:hover { transform: translateY(-3px); border-color: var(--bdr2); }
+    .video-preview-wrapper {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: #000;
+    }
+    .video-preview-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .video-preview-poster {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .video-badge-tag {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      z-index: 2;
+    }
+
+    /* TESTIMONIALS LIST */
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.3rem;
+    }
+    .test-card {
+      background: var(--bgc);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .test-card:hover { border-color: var(--bdr2); transform: translateY(-2px); }
+    .test-head { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 0.9rem; }
+    .test-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-d), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--sf);
+      font-size: 1.2rem;
+      color: var(--bg);
+      font-weight: 700;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .test-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .test-name { font-weight: 700; font-size: 1rem; color: var(--t); }
+    .test-loc { font-size: 0.78rem; color: var(--t2); }
+    .test-stars { color: var(--gold); font-size: 1rem; margin-bottom: 0.6rem; letter-spacing: 2px; }
+    .test-body { font-size: 0.88rem; color: var(--t2); line-height: 1.6; font-style: italic; margin-bottom: 1.2rem; flex: 1; }
+    .test-actions { display: flex; gap: 0.5rem; border-top: 1px solid var(--bdr); padding-top: 0.8rem; }
+
+    /* PACKAGES CARDS */
+    .pkg-admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .pkg-admin-card {
+      background: var(--bgc);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .pkg-admin-card.popular { border-color: var(--gold); }
+    .pkg-pop-badge {
+      position: absolute;
+      top: -10px;
+      right: 1.5rem;
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.2rem 0.7rem;
+      border-radius: 100px;
+      text-transform: uppercase;
+    }
+    .pkg-title { font-family: var(--sf); font-size: 1.6rem; color: var(--gold); margin-bottom: 0.3rem; font-weight: 700; }
+    .pkg-price { font-size: 1.5rem; font-weight: 700; color: var(--t); margin-bottom: 1rem; }
+    .pkg-price span { font-size: 0.85rem; color: var(--t2); font-weight: 400; margin-right: 0.3rem; }
+    .pkg-features { list-style: none; margin-bottom: 1.4rem; flex: 1; }
+    .pkg-features li {
+      font-size: 0.84rem;
+      color: var(--t2);
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(212, 180, 131, 0.06);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .pkg-features li::before { content: '✓'; color: var(--gold); font-weight: 700; }
+
+    /* MODALS & FORMS */
+    .mo {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .mo.on { display: flex; animation: fadeIn 0.2s ease-out; }
+    .mb {
+      background: var(--bgp);
+      border: 1px solid var(--bdr2);
+      border-radius: 20px;
+      padding: 2.2rem;
+      width: 100%;
+      max-width: 650px;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.7);
+      position: relative;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+    .moc {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--bdr);
+      color: var(--t2);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    .moc:hover { color: var(--t); background: var(--reds); border-color: var(--red); }
+    .mot { font-family: var(--sf); font-size: 1.7rem; color: var(--gold); margin-bottom: 0.2rem; font-weight: 700; }
+    .mos { font-size: 0.84rem; color: var(--t2); margin-bottom: 1.5rem; }
+
+    .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+    .fr.f { grid-template-columns: 1fr; }
+    .ff { display: flex; flex-direction: column; gap: 0.4rem; }
+    .flb { font-size: 0.78rem; color: var(--t2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .fc {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--bgi);
+      border: 1px solid var(--bdr);
+      border-radius: var(--rs);
+      color: var(--t);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .fc:focus { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-glow); }
+    .fc option { background: var(--bgp); color: var(--t); }
+    .fca { resize: vertical; min-height: 90px; }
+    
+    /* FILE UPLOAD DROPZONE */
+    .dropzone-box {
+      border: 2px dashed var(--bdr2);
+      border-radius: var(--rs);
+      padding: 1.4rem;
+      text-align: center;
+      background: rgba(212, 180, 131, 0.03);
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .dropzone-box:hover, .dropzone-box.dragover {
+      border-color: var(--gold);
+      background: rgba(212, 180, 131, 0.08);
+    }
+    .dropzone-box input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .dz-icon { color: var(--gold); margin-bottom: 0.5rem; }
+    .dz-title { font-weight: 600; font-size: 0.88rem; color: var(--t); margin-bottom: 0.2rem; }
+    .dz-hint { font-size: 0.74rem; color: var(--t2); }
+    
+    /* PREVIEW CONTAINER */
+    .preview-box {
+      margin-top: 0.75rem;
+      position: relative;
+      display: none;
+      border-radius: var(--rs);
+      overflow: hidden;
+      border: 1px solid var(--bdr2);
+      max-height: 180px;
+      background: #000;
+    }
+    .preview-box.on { display: block; }
+    .preview-box img, .preview-box video { width: 100%; max-height: 180px; object-fit: contain; }
+    .preview-remove {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: rgba(0,0,0,0.75);
+      border: 1px solid var(--red);
+      color: #ff6b6b;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      cursor: pointer;
+    }
+
+    /* CARD SECTIONS (SETTINGS & CONTENT) */
+    .scd {
+      background: var(--bgc);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      padding: 1.8rem;
+      margin-bottom: 1.8rem;
+    }
+    .scdt {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--bdr);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    /* QUICK ACTIONS */
+    .qa { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+    .qc {
+      background: var(--bgc);
+      border: 1px solid var(--bdr);
+      border-radius: var(--r);
+      padding: 1.3rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: inherit;
+    }
+    .qc:hover { border-color: var(--bdr2); background: var(--bgc2); transform: translateY(-2px); }
+    .qi {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(212, 180, 131, 0.12);
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .ql { font-weight: 700; font-size: 0.92rem; }
+    .qsu { font-size: 0.78rem; color: var(--t2); }
+
+    /* TOAST */
+    #atst {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--bgp);
+      border: 1px solid var(--bdr2);
+      border-left: 4px solid var(--gold);
+      color: var(--t);
+      padding: 0.9rem 1.4rem;
+      border-radius: var(--rs);
+      font-size: 0.88rem;
+      font-weight: 500;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      z-index: 9000;
+      transform: translateY(30px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    #atst.on { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 1100px) {
+      .sr { grid-template-columns: repeat(2, 1fr); }
+      .qa { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .sb { transform: translateX(-100%); transition: transform 0.3s; }
+      .sb.open { transform: translateX(0); }
+      .mc { margin-left: 0; }
+      .sr, .fr, .qa { grid-template-columns: 1fr; }
+      .pc { padding: 1.2rem; }
+    }
+
+    /* === FLOATING SOCIAL SIDEBAR === */
+    .social-sidebar { position: fixed; right: 0; top: 50%; transform: translateY(-50%); z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 0; }
+    .social-sidebar-link { display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; color: #fff; text-decoration: none; border-radius: 10px 0 0 10px; transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); position: relative; box-shadow: -3px 3px 14px rgba(0,0,0,0.45); }
+    .social-sidebar-link svg { width: 22px; height: 22px; flex-shrink: 0; transition: transform 0.3s ease; }
+    .social-sidebar-link.ss-phone   { background: linear-gradient(135deg, #34c759, #1a8c3c); }
+    .social-sidebar-link.ss-insta   { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4); }
+    .social-sidebar-link.ss-youtube { background: linear-gradient(135deg, #ff3d3d, #cc0000); }
+    .social-sidebar-link.ss-wp      { background: linear-gradient(135deg, #25d366, #128c7e); }
+    .social-sidebar-link::before { content: attr(data-tooltip); position: absolute; right: 54px; top: 50%; transform: translateY(-50%) translateX(8px); background: rgba(10,15,8,0.95); color: #f5f0e8; font-size: 0.72rem; font-weight: 600; white-space: nowrap; padding: 5px 10px; border-radius: 6px; pointer-events: none; opacity: 0; transition: all 0.3s ease; border: 1px solid rgba(212,180,131,0.3); }
+    .social-sidebar-link:hover::before { opacity: 1; transform: translateY(-50%) translateX(0); }
+    .social-sidebar-link:hover { width: 52px; box-shadow: -5px 4px 20px rgba(0,0,0,0.55); }
+    .social-sidebar-link:hover svg { transform: scale(1.15); }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY -->
+<div id="ls">
+  <div class="lb">
+    <div class="la">JP</div>
+    <h1 class="lt">Studio Admin</h1>
+    <p class="ls2">Jeeva Photography — Secure Control Centre</p>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="lf">
+        <label class="ll" for="lu">Username</label>
+        <input class="li" type="text" id="lu" placeholder="admin" autocomplete="username" required />
+      </div>
+      <div class="lf">
+        <label class="ll" for="lp">Password</label>
+        <input class="li" type="password" id="lp" placeholder="••••••••" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="lbt" id="lbn">Sign In to Dashboard</button>
+    </form>
+    <div class="ler" id="ler">Incorrect username or password. Please try again.</div>
+    <div class="login-hint">Default: <strong>admin</strong> / <strong>jeeva2024</strong></div>
+  </div>
+</div>
+
+<!-- APP WRAPPER -->
+<div id="app">
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sb">
+    <div class="sbl">
+      <div class="sbl-icon">J</div>
+      <div>
+        <span class="sbt">Jeeva Studio</span>
+        <span class="sbs">Control Centre</span>
+      </div>
+    </div>
+    <nav class="sbn">
+      <div class="ns">Overview</div>
+      <div class="sl ac" data-p="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Dashboard</span>
+      </div>
+      <div class="sl" data-p="enquiries">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Enquiries</span>
+        <span class="sbb" id="nbdg">0</span>
+      </div>
+
+      <div class="ns" style="margin-top:0.8rem">Website Sections</div>
+      <div class="sl" data-p="home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home / Hero</span>
+      </div>
+      <div class="sl" data-p="about">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>About / Founder</span>
+      </div>
+      <div class="sl" data-p="portfolio">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>Portfolio Photos</span>
+        <span class="sbb muted" id="pCount">0</span>
+      </div>
+      <div class="sl" data-p="videos">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        <span>Cinematic Films</span>
+        <span class="sbb muted" id="vCount">0</span>
+      </div>
+      <div class="sl" data-p="testimonials">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span>Testimonials</span>
+      </div>
+      <div class="sl" data-p="packages">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span>Packages & Pricing</span>
+      </div>
+
+      <div class="ns" style="margin-top:0.8rem">System</div>
+      <div class="sl" data-p="settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings & Backup</span>
+      </div>
+    </nav>
+
+    <div class="sbf">
+      <div class="sba">J</div>
+      <div class="sbfi">
+        <div class="sbfn">Jeeva</div>
+        <div class="sbfr">Studio Owner</div>
+      </div>
+      <button class="lob" id="lobtn" title="Sign Out">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT AREA -->
+  <div class="mc">
+    
+    <!-- TOPBAR -->
+    <header class="tb">
+      <div class="tb-left">
+        <span class="tbt" id="tbt">Dashboard</span>
+      </div>
+      <div class="tbr">
+        <div class="tbb"><span class="liv"></span><span>Studio Live</span></div>
+        <a href="index.html" target="_blank" class="vsb">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <span>View Site</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="pc">
+
+      <!-- TAB 1: DASHBOARD -->
+      <div class="pn ac" id="pn-dashboard">
+        <div class="sr">
+          <div class="sx">
+            <div class="sxl">Total Enquiries</div>
+            <div class="sxv" id="s1">0</div>
+            <div class="sxs">All-time received</div>
+          </div>
+          <div class="sx">
+            <div class="sxl">New Leads</div>
+            <div class="sxv" id="s2">0</div>
+            <div class="sxs">Awaiting response</div>
+          </div>
+          <div class="sx">
+            <div class="sxl">Portfolio Photos</div>
+            <div class="sxv" id="s3">0</div>
+            <div class="sxs">Live on showcase</div>
+          </div>
+          <div class="sx">
+            <div class="sxl">Cinematic Films</div>
+            <div class="sxv" id="s4">0</div>
+            <div class="sxs">Videos & reels</div>
+          </div>
+        </div>
+
+        <div class="sh">
+          <div>
+            <div class="sht">Quick Actions</div>
+            <div class="shs">Frequently used studio operations</div>
+          </div>
+        </div>
+
+        <div class="qa">
+          <div class="qc" onclick="go('home')">
+            <div class="qi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <div>
+              <div class="ql">Edit Home / Hero</div>
+              <div class="qsu">Update banners & text</div>
+            </div>
+          </div>
+          <div class="qc" onclick="go('about')">
+            <div class="qi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div>
+              <div class="ql">Edit About / Founder</div>
+              <div class="qsu">Update portrait & story</div>
+            </div>
+          </div>
+          <div class="qc" onclick="openAddPhoto()">
+            <div class="qi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg></div>
+            <div>
+              <div class="ql">+ Add Photo from PC</div>
+              <div class="qsu">Upload to portfolio</div>
+            </div>
+          </div>
+          <div class="qc" onclick="openAddVideo()">
+            <div class="qi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+            <div>
+              <div class="ql">+ Add Video Film</div>
+              <div class="qsu">Upload 4K highlights</div>
+            </div>
+          </div>
+          <div class="qc" onclick="openAddBooking()">
+            <div class="qi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
+            <div>
+              <div class="ql">+ New Client Lead</div>
+              <div class="qsu">Record manual booking</div>
+            </div>
+          </div>
+          <div class="qc" onclick="go('enquiries')">
+            <div class="qi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div>
+              <div class="ql">View All Enquiries</div>
+              <div class="qsu">Manage client bookings</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sh">
+          <div>
+            <div class="sht">Recent Enquiries</div>
+            <div class="shs">Latest leads submitted from the website</div>
+          </div>
+          <button class="bo" onclick="go('enquiries')">View All Enquiries →</button>
+        </div>
+        <div class="tw">
+          <table class="dt">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Package</th>
+                <th>Event Date</th>
+                <th>Received</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="reb">
+              <tr><td colspan="6" style="text-align:center;color:var(--t2);padding:2rem">No enquiries yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 2: HOME / HERO SECTION -->
+      <div class="pn" id="pn-home">
+        <div class="sh">
+          <div>
+            <div class="sht">Home / Hero Section Customization</div>
+            <div class="shs">Headlines, slideshow background photos, and trust badges</div>
+          </div>
+          <button class="bg" onclick="saveHomeSection()">Save Home Section</button>
+        </div>
+
+        <div class="scd">
+          <div class="scdt">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            Hero Headlines & Intro Text
+          </div>
+          <div class="fr">
+            <div class="ff">
+              <label class="flb">Studio Script Tag (Top)</label>
+              <input class="fc" id="h_nameScript" value="Jeeva" />
+            </div>
+            <div class="ff">
+              <label class="flb">Studio Serif Tag (Top)</label>
+              <input class="fc" id="h_nameSerif" value="Photography" />
+            </div>
+          </div>
+          <div class="fr">
+            <div class="ff">
+              <label class="flb">Main Headline (Line 1)</label>
+              <input class="fc" id="h_title1" value="Preserving Timeless Emotions." />
+            </div>
+            <div class="ff">
+              <label class="flb">Highlight Headline (Line 2 — Gold Accent)</label>
+              <input class="fc" id="h_title2" value="Crafting Visual Legacies." />
+            </div>
+          </div>
+          <div class="fr f">
+            <div class="ff">
+              <label class="flb">Hero Subtitle Paragraph</label>
+              <textarea class="fc fca" id="h_subtitle">A masterclass fine-art studio dedicated to documenting unscripted emotion, royal wedding ceremonies &amp; unforgettable life chapters with bespoke elegance.</textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="scd">
+          <div class="scdt">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+            Hero Background Slideshow Images (Upload from PC or Path)
+          </div>
+          <div class="fr">
+            <div class="ff">
+              <label class="flb">Hero Slide 1 (PC Upload)</label>
+              <input type="file" class="fc" accept="image/*" onchange="handleHeroSlideFile(this, 1)" />
+              <input class="fc" id="h_slide1" value="images/hero-slide-1.jpg" style="margin-top:0.4rem" />
+            </div>
+            <div class="ff">
+              <label class="flb">Hero Slide 2 (PC Upload)</label>
+              <input type="file" class="fc" accept="image/*" onchange="handleHeroSlideFile(this, 2)" />
+              <input class="fc" id="h_slide2" value="images/hero-slide-2.jpg" style="margin-top:0.4rem" />
+            </div>
+          </div>
+          <div class="fr f">
+            <div class="ff">
+              <label class="flb">Hero Slide 3 (PC Upload)</label>
+              <input type="file" class="fc" accept="image/*" onchange="handleHeroSlideFile(this, 3)" />
+              <input class="fc" id="h_slide3" value="images/hero-slide-3.jpg" style="margin-top:0.4rem" />
+            </div>
+          </div>
+        </div>
+
+        <div class="scd">
+          <div class="scdt">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Hero Trust Badges & Metrics
+          </div>
+          <div class="fr">
+            <div class="ff"><label class="flb">Badge 1 Number</label><input class="fc" id="h_t1Num" value="16+" /></div>
+            <div class="ff"><label class="flb">Badge 1 Label</label><input class="fc" id="h_t1Lbl" value="Years Mastery" /></div>
+          </div>
+          <div class="fr">
+            <div class="ff"><label class="flb">Badge 2 Number</label><input class="fc" id="h_t2Num" value="571+" /></div>
+            <div class="ff"><label class="flb">Badge 2 Label</label><input class="fc" id="h_t2Lbl" value="Celebrations" /></div>
+          </div>
+          <div class="fr">
+            <div class="ff"><label class="flb">Badge 3 Number</label><input class="fc" id="h_t3Num" value="4K" /></div>
+            <div class="ff"><label class="flb">Badge 3 Label</label><input class="fc" id="h_t3Lbl" value="Cinema Grade" /></div>
+          </div>
+          <div class="fr">
+            <div class="ff"><label class="flb">Badge 4 Number</label><input class="fc" id="h_t4Num" value="100%" /></div>
+            <div class="ff"><label class="flb">Badge 4 Label</label><input class="fc" id="h_t4Lbl" value="Artisanal Finish" /></div>
+          </div>
+          <button class="bg" onclick="saveHomeSection()">Save Home Section</button>
+        </div>
+      </div>
+
+      <!-- TAB 3: ABOUT / FOUNDER SECTION -->
+      <div class="pn" id="pn-about">
+        <div class="sh">
+          <div>
+            <div class="sht">About / Founder Section Customization</div>
+            <div class="shs">Founder portrait, bio story, quote, and key distinctive features</div>
+          </div>
+          <button class="bg" onclick="saveAboutSection()">Save About Section</button>
+        </div>
+
+        <div class="scd">
+          <div class="scdt">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Founder Portrait & Identity
+          </div>
+          <div class="fr">
+            <div class="ff">
+              <label class="flb">Founder Name</label>
+              <input class="fc" id="ab_fname" value="Jeeva" />
+            </div>
+            <div class="ff">
+              <label class="flb">Founder Role</label>
+              <input class="fc" id="ab_frole" value="Founder & Lead Artist" />
+            </div>
+          </div>
+          <div class="fr f">
+            <div class="ff">
+              <label class="flb">Upload Founder Portrait Photo from PC</label>
+              <input type="file" class="fc" accept="image/*" onchange="handleFounderImageFile(this)" />
+              <input class="fc" id="ab_fimg" value="images/founder.jpg" style="margin-top:0.4rem" />
+            </div>
+          </div>
+          <div class="fr">
+            <div class="ff">
+              <label class="flb">About Highlight Photo 2 (Rain Shoot)</label>
+              <input class="fc" id="ab_fimg2" value="images/about-2.jpg" />
+            </div>
+            <div class="ff">
+              <label class="flb">About Highlight Photo 3 (Beach Shoot)</label>
+              <input class="fc" id="ab_fimg3" value="images/about-3.jpg" />
+            </div>
+          </div>
+          <div class="fr">
+            <div class="ff">
+              <label class="flb">Floating Badge Number</label>
+              <input class="fc" id="ab_fbadgeNum" value="571+" />
+            </div>
+            <div class="ff">
+              <label class="flb">Floating Badge Label</label>
+              <input class="fc" id="ab_fbadgeLbl" value="Happy Clients" />
+            </div>
+          </div>
+        </div>
+
+        <div class="scd">
+          <div class="scdt">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            About Story & Content
+          </div>
+          <div class="fr">
+            <div class="ff"><label class="flb">Section Tag</label><input class="fc" id="ab_tag" value="About The Founder" /></div>
+            <div class="ff"><label class="flb">Heading Script Accent</label><input class="fc" id="ab_hdAccent" value="Meet" /></div>
+          </div>
+          <div class="fr f">
+            <div class="ff"><label class="flb">Experience Subheading</label><input class="fc" id="ab_expHd" value="16+ Years of Capturing Beautiful Stories" /></div>
+          </div>
+          <div class="fr f">
+            <div class="ff"><label class="flb">Story Paragraph 1</label><textarea class="fc fca" id="ab_p1">With over 16 years of dedicated mastery in the photography field, Jeeva has been turning meaningful celebrations and authentic human connections into timeless visual heirlooms.</textarea></div>
+          </div>
+          <div class="fr f">
+            <div class="ff"><label class="flb">Story Paragraph 2</label><textarea class="fc fca" id="ab_p2">From intimate ceremonies to grand destination weddings, every frame is crafted with a meticulous eye for natural light, heartfelt emotion, editorial composition, and soulful storytelling.</textarea></div>
+          </div>
+          <div class="fr f">
+            <div class="ff"><label class="flb">Quote Box Text</label><input class="fc" id="ab_quote" value="“Trusted by clients to capture their most meaningful moments.”" /></div>
+          </div>
+          <div class="fr f">
+            <div class="ff"><label class="flb">Key Features (1 feature per line)</label><textarea class="fc fca" id="ab_features">Cinematic Color Palette&#10;Candid Emotional Essence&#10;Heritage & Royal Venues&#10;Master Retouching & Framing</textarea></div>
+          </div>
+          <button class="bg" onclick="saveAboutSection()">Save About Section</button>
+        </div>
+      </div>
+
+      <!-- TAB 4: PORTFOLIO PHOTOS -->
+      <div class="pn" id="pn-portfolio">
+        <div class="sh">
+          <div>
+            <div class="sht">Portfolio Showcase Photos</div>
+            <div class="shs">Manage gallery photos displayed across categories</div>
+          </div>
+          <div class="sha">
+            <button class="bg" onclick="openAddPhoto()">+ Add Photo from PC</button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-pills" id="portFilterPills">
+            <button class="filter-pill ac" data-cat="all" onclick="filterPortfolio('all', this)">All Categories</button>
+            <button class="filter-pill" data-cat="weddings" onclick="filterPortfolio('weddings', this)">Weddings</button>
+            <button class="filter-pill" data-cat="portraits" onclick="filterPortfolio('portraits', this)">Portraits</button>
+            <button class="filter-pill" data-cat="candid" onclick="filterPortfolio('candid', this)">Candid</button>
+            <button class="filter-pill" data-cat="pre-wedding" onclick="filterPortfolio('pre-wedding', this)">Pre-Wedding</button>
+            <button class="filter-pill" data-cat="engagement" onclick="filterPortfolio('engagement', this)">Engagement</button>
+          </div>
+          <div class="si-wrap" style="max-width:300px;margin-left:auto">
+            <svg class="si-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="si" type="text" id="psi" placeholder="Search photos..." oninput="renderPortfolioGrid()" />
+          </div>
+        </div>
+
+        <div class="gallery-grid" id="portfolioGrid"></div>
+      </div>
+
+      <!-- TAB 5: CINEMATIC FILMS -->
+      <div class="pn" id="pn-videos">
+        <div class="sh">
+          <div>
+            <div class="sht">Cinematic Films & Highlights</div>
+            <div class="shs">4K wedding films, save-the-date teasers, and cinematic reels</div>
+          </div>
+          <div class="sha">
+            <button class="bg" onclick="openAddVideo()">+ Add Video Film</button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-pills" id="videoFilterPills">
+            <button class="filter-pill ac" data-cat="all" onclick="filterVideos('all', this)">All Films</button>
+            <button class="filter-pill" data-cat="wedding-films" onclick="filterVideos('wedding-films', this)">Wedding Films</button>
+            <button class="filter-pill" data-cat="save-the-date" onclick="filterVideos('save-the-date', this)">Save The Date</button>
+            <button class="filter-pill" data-cat="cinematic-reels" onclick="filterVideos('cinematic-reels', this)">Cinematic Reels</button>
+          </div>
+        </div>
+
+        <div class="video-grid" id="videosGrid"></div>
+      </div>
+
+      <!-- TAB 6: TESTIMONIALS -->
+      <div class="pn" id="pn-testimonials">
+        <div class="sh">
+          <div>
+            <div class="sht">Client Reviews & Testimonials</div>
+            <div class="shs">Couple reflections displayed on the website</div>
+          </div>
+          <div class="sha">
+            <button class="bg" onclick="openAddTestimonial()">+ Add Review</button>
+          </div>
+        </div>
+
+        <div class="test-grid" id="testimonialsGrid"></div>
+      </div>
+
+      <!-- TAB 7: PACKAGES -->
+      <div class="pn" id="pn-packages">
+        <div class="sh">
+          <div>
+            <div class="sht">Photography Packages & Pricing</div>
+            <div class="shs">Manage pricing tiers, coverage items, and promo banners</div>
+          </div>
+          <div class="sha">
+            <button class="bg" onclick="openAddPackage()">+ Add Custom Package</button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-pills" id="packageFilterPills">
+            <button class="filter-pill ac" data-pcat="all" onclick="filterAdminPackages('all', this)">All Collections (9)</button>
+            <button class="filter-pill" data-pcat="Engagement &amp; Wedding" onclick="filterAdminPackages('Engagement &amp; Wedding', this)">💍 Engagement &amp; Wedding</button>
+            <button class="filter-pill" data-pcat="Wedding" onclick="filterAdminPackages('Wedding', this)">👑 Wedding Only</button>
+            <button class="filter-pill" data-pcat="Wedding &amp; Reception" onclick="filterAdminPackages('Wedding &amp; Reception', this)">✨ Wedding &amp; Reception</button>
+          </div>
+        </div>
+
+        <div class="pkg-admin-grid" id="packagesGrid"></div>
+      </div>
+
+      <!-- TAB 8: ENQUIRIES -->
+      <div class="pn" id="pn-enquiries">
+        <div class="sh">
+          <div>
+            <div class="sht">Client Enquiries & Bookings</div>
+            <div class="shs">All incoming photography leads and walk-in records</div>
+          </div>
+          <div class="sha">
+            <button class="bg" onclick="openAddBooking()">+ Add Manual Booking</button>
+            <button class="bo" onclick="exportCSV()">Export CSV</button>
+            <button class="bd" onclick="clearAllEnquiries()">Clear All</button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="si-wrap">
+            <svg class="si-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="si" type="text" id="esi" placeholder="Search by name, phone, email, notes..." oninput="renderEnquiries()" />
+          </div>
+          <select class="fs" id="esf" onchange="renderEnquiries()">
+            <option value="">All Statuses</option>
+            <option value="New">New</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+
+        <div class="tw">
+          <table class="dt">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Client</th>
+                <th>Contact</th>
+                <th>Selected Package</th>
+                <th>Event Date</th>
+                <th>Received</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="aeb">
+              <tr><td colspan="8" style="text-align:center;color:var(--t2);padding:2.5rem">No enquiries found.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 9: SETTINGS & BACKUP -->
+      <div class="pn" id="pn-settings">
+        <div class="sh">
+          <div>
+            <div class="sht">Studio Settings & Backup</div>
+            <div class="shs">Branding, credentials, and full PC data export/import</div>
+          </div>
+        </div>
+
+        <!-- CONTACT & BRANDING -->
+        <div class="scd">
+          <div class="scdt">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Studio Information & Contact
+          </div>
+          <div class="fr">
+            <div class="ff"><label class="flb">Studio Name</label><input class="fc" id="st_n" value="Jeeva Photography" /></div>
+            <div class="ff"><label class="flb">Phone / WhatsApp</label><input class="fc" id="st_p" value="+91 95147 51045" /></div>
+          </div>
+          <div class="fr">
+            <div class="ff"><label class="flb">Email Address</label><input class="fc" id="st_e" value="jeevaphotography1820@gmail.com" /></div>
+            <div class="ff"><label class="flb">Instagram Handle</label><input class="fc" id="st_i" value="@__jeeva_photography__" /></div>
+          </div>
+          <div class="fr f">
+            <div class="ff"><label class="flb">Studio Physical Address</label><input class="fc" id="st_a" value="SB Tower Building, 1st Floor (Opp. Register Office), Vandikara Street, Ramanathapuram - 623504" /></div>
+          </div>
+          <div class="fr">
+            <div class="ff"><label class="flb">Business Hours</label><input class="fc" id="st_h" value="Mon - Sun, 9:00 AM - 8:30 PM" /></div>
+            <div class="ff"><label class="flb">Years of Experience</label><input class="fc" id="st_y" value="16+" /></div>
+          </div>
+          <div class="fr">
+            <div class="ff"><label class="flb">Happy Clients Counter</label><input class="fc" id="st_c" value="571+" /></div>
+            <div class="ff"><label class="flb">Moments Captured Counter</label><input class="fc" id="st_m" value="1000+" /></div>
+          </div>
+          <button class="bg" onclick="saveStudioSettings()">Save Studio Information</button>
+        </div>
+
+        <!-- ADMIN CREDENTIALS -->
+        <div class="scd">
+          <div class="scdt">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Change Admin Password
+          </div>
+          <div class="fr">
+            <div class="ff"><label class="flb">Current Password</label><input class="fc" type="password" id="cp" /></div>
+            <div class="ff"><label class="flb">New Password</label><input class="fc" type="password" id="np" /></div>
+          </div>
+          <div class="fr f">
+            <div class="ff"><label class="flb">Confirm New Password</label><input class="fc" type="password" id="cnp" /></div>
+          </div>
+          <button class="bg" onclick="changeAdminPassword()">Update Password</button>
+        </div>
+
+        <!-- FULL BACKUP & RESTORE -->
+        <div class="scd">
+          <div class="scdt">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Full Studio Backup & Restore (JSON)
+          </div>
+          <p style="color:var(--t2);font-size:0.86rem;margin-bottom:1.2rem">
+            Export a complete offline backup of all photos, videos, reviews, packages, inquiries, home &amp; about content, and settings to your PC. You can restore it anytime on any device.
+          </p>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center">
+            <button class="bo" onclick="exportFullBackupJSON()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export Full Backup (.json)
+            </button>
+
+            <label class="bg" style="cursor:pointer;margin:0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Import / Restore from PC
+              <input type="file" id="importJsonFile" accept=".json" style="display:none" onchange="importFullBackupJSON(event)" />
+            </label>
+
+            <button class="bd" onclick="resetDefaultsConfirm()">Reset to Defaults</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+
+<!-- MODAL: ADD / EDIT PHOTO -->
+<div class="mo" id="photoModal">
+  <div class="mb">
+    <button class="moc" onclick="closeModal('photoModal')">&#10005;</button>
+    <div class="mot" id="pmTitle">Add New Photo</div>
+    <div class="mos">Upload photo from your PC or paste an image path</div>
+    <form id="photoForm" onsubmit="savePhoto(event)">
+      <input type="hidden" id="photoId" />
+
+      <div class="ff" style="margin-bottom:1.2rem">
+        <label class="flb">Upload Photo from PC</label>
+        <div class="dropzone-box" id="photoDropzone">
+          <input type="file" id="photoFileInput" accept="image/*" onchange="handlePhotoFile(this)" />
+          <div class="dz-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+          <div class="dz-title">Click to Browse or Drag Photo Here</div>
+          <div class="dz-hint">Supports JPG, PNG, WEBP from your PC</div>
+        </div>
+        <div class="preview-box" id="photoPreviewBox">
+          <img id="photoPreviewImg" src="" alt="Preview" />
+          <button type="button" class="preview-remove" onclick="removePhotoPreview()">Remove</button>
+        </div>
+      </div>
+
+      <div class="fr f">
+        <div class="ff">
+          <label class="flb">Or Image URL / Path</label>
+          <input class="fc" id="photoUrl" placeholder="images/portfolio-wedding-1.jpg" oninput="handlePhotoUrlInput(this.value)" />
+        </div>
+      </div>
+
+      <div class="fr f">
+        <div class="ff">
+          <label class="flb">Photo Title</label>
+          <input class="fc" id="photoTitle" placeholder="e.g. VOWS — Triple Portrait, Together Is a Beautiful Place" required />
+        </div>
+      </div>
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Category</label>
+          <select class="fc" id="photoCategory" onchange="autoFillCatLabel(this.value)" required>
+            <option value="weddings">Weddings</option>
+            <option value="portraits">Portraits</option>
+            <option value="candid">Candid</option>
+            <option value="pre-wedding">Pre-Wedding</option>
+            <option value="engagement">Engagement</option>
+          </select>
+        </div>
+        <div class="ff">
+          <label class="flb">Category Badge Label</label>
+          <input class="fc" id="photoCatLabel" placeholder="e.g. Editorial Portrait" required />
+        </div>
+      </div>
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Format / Orientation</label>
+          <select class="fc" id="photoFormat">
+            <option value="tall">Tall (Portrait 3:4 / 4:5)</option>
+            <option value="normal">Standard (3:2)</option>
+            <option value="wide">Wide / Landscape</option>
+          </select>
+        </div>
+        <div class="ff">
+          <label class="flb">Location</label>
+          <input class="fc" id="photoLocation" placeholder="e.g. Studio Jeeva / Ramanathapuram" />
+        </div>
+      </div>
+
+      <div class="fr f">
+        <div class="ff">
+          <label class="flb">Year</label>
+          <input class="fc" id="photoYear" value="2026" />
+        </div>
+      </div>
+
+      <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
+        <button type="submit" class="bg">Save Photo</button>
+        <button type="button" class="bo" onclick="closeModal('photoModal')">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: ADD / EDIT VIDEO -->
+<div class="mo" id="videoModal">
+  <div class="mb">
+    <button class="moc" onclick="closeModal('videoModal')">&#10005;</button>
+    <div class="mot" id="vmTitle">Add Cinematic Film</div>
+    <div class="mos">Upload video file & poster from PC or enter URLs</div>
+    <form id="videoForm" onsubmit="saveVideo(event)">
+      <input type="hidden" id="videoId" />
+
+      <!-- Video file upload -->
+      <div class="ff" style="margin-bottom:1.2rem">
+        <label class="flb">Upload Video from PC</label>
+        <div class="dropzone-box" id="videoDropzone">
+          <input type="file" id="videoFileInput" accept="video/mp4,video/webm" onchange="handleVideoFile(this)" />
+          <div class="dz-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+          <div class="dz-title">Click to Browse or Drag MP4 / WEBM Video</div>
+          <div class="dz-hint">Supports MP4, WEBM up to 4K from your PC</div>
+        </div>
+        <div class="preview-box" id="videoPreviewBox">
+          <video id="videoPreviewEl" controls style="max-height:220px;width:100%;border-radius:var(--rs)"></video>
+          <iframe id="videoPreviewIframe" style="display:none;width:100%;height:220px;border:0;border-radius:var(--rs)" allowfullscreen></iframe>
+          <button type="button" class="preview-remove" onclick="removeVideoPreview()">Remove Preview</button>
+        </div>
+      </div>
+
+      <div class="fr f">
+        <div class="ff">
+          <label class="flb">Or Video URL (YouTube, Vimeo, or MP4)</label>
+          <input class="fc" id="videoSrc" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..." oninput="handleVideoUrlInput(this.value)" />
+        </div>
+      </div>
+
+      <!-- Poster Upload -->
+      <div class="ff" style="margin-bottom:1.2rem">
+        <label class="flb">Upload Video Cover / Poster from PC</label>
+        <div class="dropzone-box" style="padding:1rem">
+          <input type="file" id="posterFileInput" accept="image/*" onchange="handlePosterFile(this)" />
+          <div class="dz-title">Browse Video Poster Image</div>
+        </div>
+        <input class="fc" id="videoPoster" placeholder="images/portfolio-wedding-1.jpg" style="margin-top:0.4rem" />
+      </div>
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Film Title</label>
+          <input class="fc" id="videoTitle" placeholder="Suba Weds Saran — The Royal Wedding Film" required />
+        </div>
+        <div class="ff">
+          <label class="flb">Couple / Subject</label>
+          <input class="fc" id="videoCouple" placeholder="Suba & Saran" required />
+        </div>
+      </div>
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Category</label>
+          <select class="fc" id="videoCat" required>
+            <option value="wedding-films">Wedding Films</option>
+            <option value="save-the-date">Save The Date</option>
+            <option value="cinematic-reels">Cinematic Reels</option>
+          </select>
+        </div>
+        <div class="ff">
+          <label class="flb">Category Label</label>
+          <input class="fc" id="videoCatLabel" placeholder="Wedding Ceremony Film" />
+        </div>
+      </div>
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Quality Badge</label>
+          <input class="fc" id="videoBadge" placeholder="4K Ultra HD" value="4K Ultra HD" />
+        </div>
+        <div class="ff">
+          <label class="flb">Tag / Pill</label>
+          <input class="fc" id="videoTag" placeholder="Royal Wedding" value="Royal Wedding" />
+        </div>
+      </div>
+
+      <div class="fr f">
+        <div class="ff">
+          <label class="flb">Story Description</label>
+          <textarea class="fc fca" id="videoDesc" placeholder="An emotional and grand celebration capturing holy rituals..."></textarea>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
+        <button type="submit" class="bg">Save Cinematic Film</button>
+        <button type="button" class="bo" onclick="closeModal('videoModal')">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: ADD / EDIT TESTIMONIAL -->
+<div class="mo" id="testModal">
+  <div class="mb">
+    <button class="moc" onclick="closeModal('testModal')">&#10005;</button>
+    <div class="mot" id="tmTitle">Add Review</div>
+    <div class="mos">Client reflection will appear on the live website</div>
+    <form id="testForm" onsubmit="saveTestimonial(event)">
+      <input type="hidden" id="testId" />
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Client Name</label>
+          <input class="fc" id="testName" placeholder="e.g. Priya & Karthik" required />
+        </div>
+        <div class="ff">
+          <label class="flb">Event Location / Description</label>
+          <input class="fc" id="testLoc" placeholder="e.g. Grand Wedding, Ramanathapuram" required />
+        </div>
+      </div>
+
+      <div class="fr f">
+        <div class="ff">
+          <label class="flb">Review Text</label>
+          <textarea class="fc fca" id="testText" placeholder="“Jeeva Photography captured every important moment beautifully...”" required></textarea>
+        </div>
+      </div>
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Rating (Stars)</label>
+          <select class="fc" id="testStars">
+            <option value="5">★★★★★ (5 Stars)</option>
+            <option value="4">★★★★☆ (4 Stars)</option>
+            <option value="3">★★★☆☆ (3 Stars)</option>
+          </select>
+        </div>
+        <div class="ff">
+          <label class="flb">Optional Client Photo from PC</label>
+          <input type="file" id="testAvatarFile" class="fc" accept="image/*" onchange="handleAvatarFile(this)" />
+        </div>
+      </div>
+
+      <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
+        <button type="submit" class="bg">Save Review</button>
+        <button type="button" class="bo" onclick="closeModal('testModal')">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: ADD / EDIT PACKAGE -->
+<div class="mo" id="pkgModal">
+  <div class="mb">
+    <button class="moc" onclick="closeModal('pkgModal')">&#10005;</button>
+    <div class="mot" id="pkmTitle">Add Photography Package</div>
+    <div class="mos">Create or customize package tiers and pricing</div>
+    <form id="pkgForm" onsubmit="savePackage(event)">
+      <input type="hidden" id="pkgId" />
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Package Title</label>
+          <input class="fc" id="pkgTitle" placeholder="Premium Package" required />
+        </div>
+        <div class="ff">
+          <label class="flb">Script Accent Heading</label>
+          <input class="fc" id="pkgScriptTitle" placeholder="Premium" required />
+        </div>
+      </div>
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Package Collection / Category</label>
+          <select class="fc" id="pkgCategory">
+            <option value="Engagement &amp; Wedding">Engagement &amp; Wedding</option>
+            <option value="Wedding">Wedding</option>
+            <option value="Wedding &amp; Reception">Wedding &amp; Reception</option>
+            <option value="Custom">Custom</option>
+          </select>
+        </div>
+        <div class="ff">
+          <label class="flb">Subtitle / Tag</label>
+          <input class="fc" id="pkgSubtitle" placeholder="ENGAGEMENT &amp; WEDDING / WEDDING / WEDDING &amp; RECEPTION" />
+        </div>
+      </div>
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Price Amount (e.g. 1,60,000)</label>
+          <input class="fc" id="pkgPrice" placeholder="1,60,000" required />
+        </div>
+        <div class="ff">
+          <label class="flb">Badge Overlay</label>
+          <input class="fc" id="pkgBadge" placeholder="PROMESSE / EVERYTHING" />
+        </div>
+      </div>
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Is Most Popular Tier?</label>
+          <select class="fc" id="pkgIsPopular">
+            <option value="false">No (Standard card)</option>
+            <option value="true">Yes (Highlighted popular)</option>
+          </select>
+        </div>
+        <div class="ff">
+          <label class="flb">Main Card Image Path / PC Upload</label>
+          <input class="fc" id="pkgMainImage" placeholder="images/hero-slide-2.jpg" />
+        </div>
+      </div>
+
+      <div class="fr f">
+        <div class="ff">
+          <label class="flb">Coverage Features (1 feature per line)</label>
+          <textarea class="fc fca" id="pkgFeatures" rows="6" placeholder="Full-Day Coverage (8–12 Hours)&#10;Pre-Wedding Ceremony&#10;Wedding Ceremony&#10;Reception Coverage&#10;Family and Group Portraits&#10;Couple Portraits&#10;Candid Photography throughout the event" required></textarea>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
+        <button type="submit" class="bg">Save Package</button>
+        <button type="button" class="bo" onclick="closeModal('pkgModal')">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: ADD MANUAL ENQUIRY / BOOKING -->
+<div class="mo" id="bookingModal">
+  <div class="mb">
+    <button class="moc" onclick="closeModal('bookingModal')">&#10005;</button>
+    <div class="mot" id="bmTitle">Add Client Booking</div>
+    <div class="mos">Record a new enquiry or walk-in client</div>
+    <form id="bookingForm" onsubmit="saveBooking(event)">
+      <input type="hidden" id="bkId" />
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Client Name</label>
+          <input class="fc" id="bkName" placeholder="Client Name" required />
+        </div>
+        <div class="ff">
+          <label class="flb">Phone Number</label>
+          <input class="fc" id="bkPhone" placeholder="+91 95147 51045" required />
+        </div>
+      </div>
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Email Address</label>
+          <input class="fc" id="bkEmail" type="email" placeholder="client@example.com" />
+        </div>
+        <div class="ff">
+          <label class="flb">Event Date</label>
+          <input class="fc" type="date" id="bkDate" />
+        </div>
+      </div>
+
+      <div class="fr">
+        <div class="ff">
+          <label class="flb">Package / Service Type</label>
+          <input class="fc" id="bkService" placeholder="e.g. Premium Package - Rs 1,60,000" required />
+        </div>
+        <div class="ff">
+          <label class="flb">Booking Status</label>
+          <select class="fc" id="bkStatus">
+            <option value="New">New</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fr f">
+        <div class="ff">
+          <label class="flb">Notes & Vision Details</label>
+          <textarea class="fc fca" id="bkNotes" placeholder="Client requirements, venue details..."></textarea>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
+        <button type="submit" class="bg">Save Booking</button>
+        <button type="button" class="bo" onclick="closeModal('bookingModal')">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: VIEW ENQUIRY DETAILS -->
+<div class="mo" id="viewEnquiryModal">
+  <div class="mb">
+    <button class="moc" onclick="closeModal('viewEnquiryModal')">&#10005;</button>
+    <div class="mot" id="veName">Client Name</div>
+    <div class="mos" id="veReceived">Received info</div>
+    <div id="veBody"></div>
+    <div class="sha" id="veActions" style="margin-top:1.5rem;border-top:1px solid var(--bdr);padding-top:1.2rem"></div>
+  </div>
+</div>
+
+<div id="atst">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="atstMsg">Action successful</span>
+</div>
+
+<!-- DATA SYNC LAYER -->
+<script src="js/portfolio-data.js"></script>
+<script src="js/video-data.js"></script>
+<script src="js/db-sync.js"></script>
+
+<script>
+/* ADMIN CONTROLLER SCRIPT */
+
+// 1. AUTHENTICATION & LOGIN
+const loginForm = document.getElementById('loginForm');
+function handleLogin(e) {
+  if (e) e.preventDefault();
+  const auth = JeevaDB.getAuth();
+  const u = document.getElementById('lu').value.trim();
+  const p = document.getElementById('lp').value;
+
+  if (u === auth.username && p === auth.password) {
+    document.getElementById('ler').classList.remove('on');
+    document.getElementById('ls').classList.add('h');
+    setTimeout(() => {
+      document.getElementById('ls').style.display = 'none';
+      document.getElementById('app').classList.add('on');
+      initAdmin();
+    }, 400);
+  } else {
+    document.getElementById('ler').classList.add('on');
+    document.getElementById('lp').value = '';
+    document.getElementById('lp').focus();
+  }
+}
+
+document.getElementById('lobtn').onclick = () => {
+  document.getElementById('app').classList.remove('on');
+  const ls = document.getElementById('ls');
+  ls.style.display = 'flex';
+  ls.style.opacity = '1';
+  ls.classList.remove('h');
+  document.getElementById('lu').value = '';
+  document.getElementById('lp').value = '';
+};
+
+// 2. TAB NAVIGATION
+const PAGE_TITLES = {
+  dashboard: 'Dashboard',
+  home: 'Home / Hero Customization',
+  about: 'About / Founder Story',
+  enquiries: 'Client Enquiries & Bookings',
+  portfolio: 'Portfolio Photos',
+  videos: 'Cinematic Films & Highlights',
+  testimonials: 'Client Testimonials',
+  packages: 'Packages & Pricing',
+  settings: 'Studio Settings & Backup'
+};
+
+function go(pageId) {
+  document.querySelectorAll('.pn').forEach(p => p.classList.remove('ac'));
+  document.querySelectorAll('.sl').forEach(l => l.classList.remove('ac'));
+  
+  const targetPanel = document.getElementById('pn-' + pageId);
+  if (targetPanel) targetPanel.classList.add('ac');
+  
+  const targetNav = document.querySelector(`.sl[data-p="${pageId}"]`);
+  if (targetNav) targetNav.classList.add('ac');
+  
+  document.getElementById('tbt').textContent = PAGE_TITLES[pageId] || pageId;
+
+  if (pageId === 'dashboard') renderDashboard();
+  if (pageId === 'home') loadHomeValues();
+  if (pageId === 'about') loadAboutValues();
+  if (pageId === 'enquiries') renderEnquiries();
+  if (pageId === 'portfolio') renderPortfolioGrid();
+  if (pageId === 'videos') renderVideosGrid();
+  if (pageId === 'testimonials') renderTestimonialsGrid();
+  if (pageId === 'packages') renderPackagesGrid();
+  if (pageId === 'settings') loadSettingsValues();
+}
+
+document.querySelectorAll('.sl[data-p]').forEach(navItem => {
+  navItem.onclick = () => go(navItem.getAttribute('data-p'));
+});
+
+// Toast Notifications
+function toast(msg) {
+  const t = document.getElementById('atst');
+  document.getElementById('atstMsg').textContent = msg;
+  t.classList.add('on');
+  setTimeout(() => t.classList.remove('on'), 3200);
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('on');
+}
+document.querySelectorAll('.mo').forEach(modal => {
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.classList.remove('on');
+  };
+});
+
+function fmtDate(d) {
+  if (!d) return '-';
+  try {
+    return new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  } catch (e) {
+    return d;
+  }
+}
+
+function statusBadge(s) {
+  const map = { New: 'st-n', Contacted: 'st-c', Confirmed: 'st-k', Closed: 'st-x' };
+  return `<span class="stb ${map[s] || 'st-n'}"><span class="std"></span>${s}</span>`;
+}
+
+// 3. DASHBOARD RENDER
+function renderDashboard() {
+  const enquiries = JeevaDB.getEnquiries();
+  const portfolio = JeevaDB.getPortfolio();
+  const videos = JeevaDB.getVideos();
+  const newLeads = enquiries.filter(x => x.status === 'New').length;
+
+  document.getElementById('s1').textContent = enquiries.length;
+  document.getElementById('s2').textContent = newLeads;
+  document.getElementById('s3').textContent = portfolio.length;
+  document.getElementById('s4').textContent = videos.length;
+  document.getElementById('nbdg').textContent = newLeads;
+  document.getElementById('pCount').textContent = portfolio.length;
+  document.getElementById('vCount').textContent = videos.length;
+
+  const recent = enquiries.slice(0, 5);
+  const tb = document.getElementById('reb');
+  if (!recent.length) {
+    tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--t2);padding:2rem">No enquiries yet.</td></tr>';
+    return;
+  }
+  tb.innerHTML = recent.map(e => `
+    <tr>
+      <td><strong>${escapeHtml(e.name)}</strong><br/><span style="color:var(--t2);font-size:.78rem">${escapeHtml(e.email || e.phone)}</span></td>
+      <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(e.service || 'Photography')}</td>
+      <td>${escapeHtml(e.date || '-')}</td>
+      <td style="color:var(--t2);font-size:.82rem">${fmtDate(e.submittedAt)}</td>
+      <td>${statusBadge(e.status)}</td>
+      <td><button class="bo bsm" onclick="viewEnquiry(${e.id})">View</button></td>
+    </tr>
+  `).join('');
+}
+
+// 4. HOME / HERO CONTROLLER
+function loadHomeValues() {
+  const h = JeevaDB.getHome();
+  if (h.studioNameScript) document.getElementById('h_nameScript').value = h.studioNameScript;
+  if (h.studioNameSerif) document.getElementById('h_nameSerif').value = h.studioNameSerif;
+  if (h.heroTitleLine1) document.getElementById('h_title1').value = h.heroTitleLine1;
+  if (h.heroTitleHighlight) document.getElementById('h_title2').value = h.heroTitleHighlight;
+  if (h.heroSubtitle) document.getElementById('h_subtitle').value = h.heroSubtitle;
+  if (h.heroSlide1) document.getElementById('h_slide1').value = h.heroSlide1;
+  if (h.heroSlide2) document.getElementById('h_slide2').value = h.heroSlide2;
+  if (h.heroSlide3) document.getElementById('h_slide3').value = h.heroSlide3;
+  if (h.trust1Num) document.getElementById('h_t1Num').value = h.trust1Num;
+  if (h.trust1Lbl) document.getElementById('h_t1Lbl').value = h.trust1Lbl;
+  if (h.trust2Num) document.getElementById('h_t2Num').value = h.trust2Num;
+  if (h.trust2Lbl) document.getElementById('h_t2Lbl').value = h.trust2Lbl;
+  if (h.trust3Num) document.getElementById('h_t3Num').value = h.trust3Num;
+  if (h.trust3Lbl) document.getElementById('h_t3Lbl').value = h.trust3Lbl;
+  if (h.trust4Num) document.getElementById('h_t4Num').value = h.trust4Num;
+  if (h.trust4Lbl) document.getElementById('h_t4Lbl').value = h.trust4Lbl;
+}
+
+function handleHeroSlideFile(input, slideIndex) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById(`h_slide${slideIndex}`).value = e.target.result;
+    toast(`Hero Slide ${slideIndex} photo loaded from PC`);
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveHomeSection() {
+  const data = {
+    studioNameScript: document.getElementById('h_nameScript').value.trim(),
+    studioNameSerif: document.getElementById('h_nameSerif').value.trim(),
+    heroTitleLine1: document.getElementById('h_title1').value.trim(),
+    heroTitleHighlight: document.getElementById('h_title2').value.trim(),
+    heroSubtitle: document.getElementById('h_subtitle').value.trim(),
+    heroSlide1: document.getElementById('h_slide1').value.trim(),
+    heroSlide2: document.getElementById('h_slide2').value.trim(),
+    heroSlide3: document.getElementById('h_slide3').value.trim(),
+    trust1Num: document.getElementById('h_t1Num').value.trim(),
+    trust1Lbl: document.getElementById('h_t1Lbl').value.trim(),
+    trust2Num: document.getElementById('h_t2Num').value.trim(),
+    trust2Lbl: document.getElementById('h_t2Lbl').value.trim(),
+    trust3Num: document.getElementById('h_t3Num').value.trim(),
+    trust3Lbl: document.getElementById('h_t3Lbl').value.trim(),
+    trust4Num: document.getElementById('h_t4Num').value.trim(),
+    trust4Lbl: document.getElementById('h_t4Lbl').value.trim()
+  };
+  JeevaDB.saveHome(data);
+  toast('Home / Hero section saved successfully');
+}
+
+// 5. ABOUT / FOUNDER CONTROLLER
+function loadAboutValues() {
+  const ab = JeevaDB.getAbout();
+  if (ab.founderName) document.getElementById('ab_fname').value = ab.founderName;
+  if (ab.founderRole) document.getElementById('ab_frole').value = ab.founderRole;
+  if (ab.founderImage) document.getElementById('ab_fimg').value = ab.founderImage;
+  if (ab.aboutImg2) document.getElementById('ab_fimg2').value = ab.aboutImg2;
+  if (ab.aboutImg3) document.getElementById('ab_fimg3').value = ab.aboutImg3;
+  if (ab.floatingBadgeNum) document.getElementById('ab_fbadgeNum').value = ab.floatingBadgeNum;
+  if (ab.floatingBadgeLabel) document.getElementById('ab_fbadgeLbl').value = ab.floatingBadgeLabel;
+  if (ab.sectionTag) document.getElementById('ab_tag').value = ab.sectionTag;
+  if (ab.headingAccent) document.getElementById('ab_hdAccent').value = ab.headingAccent;
+  if (ab.expHeading) document.getElementById('ab_expHd').value = ab.expHeading;
+  if (ab.leadText1) document.getElementById('ab_p1').value = ab.leadText1;
+  if (ab.leadText2) document.getElementById('ab_p2').value = ab.leadText2;
+  if (ab.quoteText) document.getElementById('ab_quote').value = ab.quoteText;
+  if (ab.features && Array.isArray(ab.features)) document.getElementById('ab_features').value = ab.features.join('\n');
+}
+
+function handleFounderImageFile(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById('ab_fimg').value = e.target.result;
+    toast('Founder portrait loaded from PC');
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveAboutSection() {
+  const features = document.getElementById('ab_features').value
+    .split('\n')
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  const data = {
+    founderName: document.getElementById('ab_fname').value.trim(),
+    founderRole: document.getElementById('ab_frole').value.trim(),
+    founderImage: document.getElementById('ab_fimg').value.trim(),
+    aboutImg2: document.getElementById('ab_fimg2') ? document.getElementById('ab_fimg2').value.trim() : 'images/about-2.jpg',
+    aboutImg3: document.getElementById('ab_fimg3') ? document.getElementById('ab_fimg3').value.trim() : 'images/about-3.jpg',
+    floatingBadgeNum: document.getElementById('ab_fbadgeNum').value.trim(),
+    floatingBadgeLabel: document.getElementById('ab_fbadgeLbl').value.trim(),
+    sectionTag: document.getElementById('ab_tag').value.trim(),
+    headingAccent: document.getElementById('ab_hdAccent').value.trim(),
+    expHeading: document.getElementById('ab_expHd').value.trim(),
+    leadText1: document.getElementById('ab_p1').value.trim(),
+    leadText2: document.getElementById('ab_p2').value.trim(),
+    quoteText: document.getElementById('ab_quote').value.trim(),
+    features
+  };
+  JeevaDB.saveAbout(data);
+  toast('About / Founder section saved successfully');
+}
+
+// 6. ENQUIRIES CONTROLLER
+function renderEnquiries() {
+  const query = (document.getElementById('esi')?.value || '').toLowerCase().trim();
+  const filter = document.getElementById('esf')?.value || '';
+  let list = JeevaDB.getEnquiries();
+
+  if (query) {
+    list = list.filter(x => 
+      (x.name || '').toLowerCase().includes(query) ||
+      (x.phone || '').includes(query) ||
+      (x.email || '').toLowerCase().includes(query) ||
+      (x.notes || '').toLowerCase().includes(query) ||
+      (x.service || '').toLowerCase().includes(query)
+    );
+  }
+  if (filter) {
+    list = list.filter(x => x.status === filter);
+  }
+
+  const tb = document.getElementById('aeb');
+  if (!list.length) {
+    tb.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--t2);padding:2.5rem">No enquiries found.</td></tr>';
+    return;
+  }
+
+  tb.innerHTML = list.map((item, index) => `
+    <tr>
+      <td style="color:var(--t2)">${index + 1}</td>
+      <td><strong>${escapeHtml(item.name)}</strong><br/><span style="color:var(--t2);font-size:.78rem">${escapeHtml(item.email || '-')}</span></td>
+      <td><a href="tel:${escapeHtml(item.phone)}" style="color:var(--gold)">${escapeHtml(item.phone)}</a></td>
+      <td style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(item.service)}</td>
+      <td>${escapeHtml(item.date || '-')}</td>
+      <td style="color:var(--t2);font-size:.82rem">${fmtDate(item.submittedAt)}</td>
+      <td>
+        <select class="fs" style="padding:.3rem .5rem;font-size:.78rem" onchange="updateEnquiryStatus(${item.id}, this.value)">
+          <option ${item.status === 'New' ? 'selected' : ''}>New</option>
+          <option ${item.status === 'Contacted' ? 'selected' : ''}>Contacted</option>
+          <option ${item.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+          <option ${item.status === 'Closed' ? 'selected' : ''}>Closed</option>
+        </select>
+      </td>
+      <td style="display:flex;gap:.4rem">
+        <button class="bo bsm" onclick="viewEnquiry(${item.id})">View</button>
+        <button class="bo bsm" onclick="editEnquiry(${item.id})">Edit</button>
+        <button class="bd bsm" onclick="deleteEnquiryConfirm(${item.id})">Del</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function updateEnquiryStatus(id, newStatus) {
+  JeevaDB.updateEnquiry(id, { status: newStatus });
+  renderDashboard();
+  toast(`Status updated to ${newStatus}`);
+}
+
+function viewEnquiry(id) {
+  const e = JeevaDB.getEnquiries().find(x => x.id === id);
+  if (!e) return;
+  document.getElementById('veName').textContent = e.name;
+  document.getElementById('veReceived').textContent = `Received on ${fmtDate(e.submittedAt)} • Status: ${e.status}`;
+  
+  document.getElementById('veBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;background:var(--bgc);padding:1.2rem;border-radius:10px;border:1px solid var(--bdr)">
+      <div><span style="font-size:.74rem;color:var(--t2);text-transform:uppercase">Phone</span><br/><a href="tel:${e.phone}" style="color:var(--gold);font-weight:600">${e.phone}</a></div>
+      <div><span style="font-size:.74rem;color:var(--t2);text-transform:uppercase">Email</span><br/><a href="mailto:${e.email}" style="color:var(--gold);font-weight:600">${e.email || '-'}</a></div>
+      <div><span style="font-size:.74rem;color:var(--t2);text-transform:uppercase">Selected Package</span><br/><strong>${e.service || 'Photography'}</strong></div>
+      <div><span style="font-size:.74rem;color:var(--t2);text-transform:uppercase">Event Date</span><br/><strong>${e.date || '-'}</strong></div>
+    </div>
+    <div style="background:var(--bgi);padding:1.2rem;border-radius:10px;border:1px solid var(--bdr)">
+      <span style="font-size:.74rem;color:var(--t2);text-transform:uppercase;display:block;margin-bottom:.4rem">Client Notes & Vision</span>
+      <p style="color:var(--t);white-space:pre-wrap;line-height:1.6">${escapeHtml(e.notes || 'No extra notes.')}</p>
+    </div>
+  `;
+
+  const waMsg = encodeURIComponent(
+`*JEEVA PHOTOGRAPHY - BOOKING FOLLOW-UP*
+Hello ${e.name}, thank you for contacting Jeeva Photography regarding your celebration on ${e.date || 'your upcoming date'}.
+We would love to discuss your photography timeline and packages!`
+  );
+
+  document.getElementById('veActions').innerHTML = `
+    <a href="https://wa.me/91${(e.phone || '').replace(/\D/g, '')}?text=${waMsg}" target="_blank" class="bg" style="text-decoration:none">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      WhatsApp Client
+    </a>
+    <a href="tel:${e.phone}" class="bo" style="text-decoration:none">Call Client</a>
+    <button class="bo" onclick="editEnquiry(${e.id});closeModal('viewEnquiryModal')">Edit Details</button>
+    <button class="bd" onclick="deleteEnquiryConfirm(${e.id});closeModal('viewEnquiryModal')">Delete</button>
+  `;
+
+  document.getElementById('viewEnquiryModal').classList.add('on');
+}
+
+function openAddBooking() {
+  document.getElementById('bmTitle').textContent = 'Add Client Booking';
+  document.getElementById('bkId').value = '';
+  document.getElementById('bookingForm').reset();
+  document.getElementById('bookingModal').classList.add('on');
+}
+
+function editEnquiry(id) {
+  const e = JeevaDB.getEnquiries().find(x => x.id === id);
+  if (!e) return;
+  document.getElementById('bmTitle').textContent = 'Edit Client Booking';
+  document.getElementById('bkId').value = e.id;
+  document.getElementById('bkName').value = e.name;
+  document.getElementById('bkPhone').value = e.phone;
+  document.getElementById('bkEmail').value = e.email || '';
+  document.getElementById('bkDate').value = e.date || '';
+  document.getElementById('bkService').value = e.service || '';
+  document.getElementById('bkStatus').value = e.status || 'New';
+  document.getElementById('bkNotes').value = e.notes || '';
+  document.getElementById('bookingModal').classList.add('on');
+}
+
+function saveBooking(e) {
+  e.preventDefault();
+  const id = document.getElementById('bkId').value ? parseInt(document.getElementById('bkId').value) : Date.now();
+  const data = {
+    id,
+    name: document.getElementById('bkName').value.trim(),
+    phone: document.getElementById('bkPhone').value.trim(),
+    email: document.getElementById('bkEmail').value.trim(),
+    date: document.getElementById('bkDate').value,
+    service: document.getElementById('bkService').value.trim(),
+    status: document.getElementById('bkStatus').value,
+    notes: document.getElementById('bkNotes').value.trim(),
+    submittedAt: new Date().toISOString()
+  };
+
+  const existing = JeevaDB.getEnquiries().find(x => x.id === id);
+  if (existing) {
+    JeevaDB.updateEnquiry(id, data);
+    toast('Booking details updated');
+  } else {
+    JeevaDB.addEnquiry(data);
+    toast('New booking added');
+  }
+
+  closeModal('bookingModal');
+  renderEnquiries();
+  renderDashboard();
+}
+
+function deleteEnquiryConfirm(id) {
+  if (!confirm('Are you sure you want to delete this enquiry?')) return;
+  JeevaDB.deleteEnquiry(id);
+  renderEnquiries();
+  renderDashboard();
+  toast('Enquiry deleted');
+}
+
+function clearAllEnquiries() {
+  if (!confirm('Are you sure you want to delete ALL enquiries? This cannot be undone.')) return;
+  JeevaDB.clearAllEnquiries();
+  renderEnquiries();
+  renderDashboard();
+  toast('All enquiries deleted');
+}
+
+function exportCSV() {
+  const list = JeevaDB.getEnquiries();
+  if (!list.length) { toast('No enquiries to export'); return; }
+  const headers = ['Name', 'Phone', 'Email', 'Package', 'Event Date', 'Received', 'Status', 'Notes'];
+  const rows = list.map(x => [
+    x.name, x.phone, x.email, x.service, x.date, fmtDate(x.submittedAt), x.status, x.notes
+  ].map(v => '"' + String(v || '').replace(/"/g, '""') + '"'));
+  
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `jeeva_enquiries_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Exported enquiries to CSV');
+}
+
+// 7. PORTFOLIO CONTROLLER (PHOTOS FROM PC)
+let currentPhotoCategory = 'all';
+let currentPhotoBlobData = null;
+
+function filterPortfolio(cat, btn) {
+  currentPhotoCategory = cat;
+  document.querySelectorAll('#portFilterPills .filter-pill').forEach(p => p.classList.remove('ac'));
+  if (btn) btn.classList.add('ac');
+  renderPortfolioGrid();
+}
+
+function renderPortfolioGrid() {
+  const query = (document.getElementById('psi')?.value || '').toLowerCase().trim();
+  let list = JeevaDB.getPortfolio();
+
+  if (currentPhotoCategory !== 'all') {
+    list = list.filter(item => item.category === currentPhotoCategory);
+  }
+  if (query) {
+    list = list.filter(item => 
+      (item.title || '').toLowerCase().includes(query) ||
+      (item.categoryLabel || '').toLowerCase().includes(query) ||
+      (item.location || '').toLowerCase().includes(query)
+    );
+  }
+
+  const grid = document.getElementById('portfolioGrid');
+  if (!list.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--t2);padding:4rem">No portfolio photos found. Click "+ Add Photo from PC" above to upload your first photo!</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(item => `
+    <div class="gallery-card">
+      <div class="gallery-thumb-wrap">
+        <img class="gallery-thumb" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='images/hero-slide-1.jpg'" />
+        <span class="gallery-tag-pill">${escapeHtml(item.categoryLabel || item.category)}</span>
+        <span class="gallery-format-pill">${escapeHtml(item.format || 'tall')}</span>
+      </div>
+      <div class="gallery-card-body">
+        <div>
+          <h3 class="gallery-card-title">${escapeHtml(item.title)}</h3>
+          <div class="gallery-card-meta">
+            <span>📍 ${escapeHtml(item.location || 'Studio Jeeva')}</span>
+            <span>🗓️ ${escapeHtml(item.year || '2026')}</span>
+          </div>
+        </div>
+        <div class="gallery-card-actions">
+          <button class="bo bsm" style="flex:1" onclick="openEditPhoto('${item.id}')">Edit</button>
+          <button class="bd bsm" onclick="deletePhotoConfirm('${item.id}')">Delete</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openAddPhoto() {
+  document.getElementById('pmTitle').textContent = 'Add New Photo from PC';
+  document.getElementById('photoId').value = '';
+  document.getElementById('photoForm').reset();
+  removePhotoPreview();
+  document.getElementById('photoModal').classList.add('on');
+}
+
+function openEditPhoto(id) {
+  const item = JeevaDB.getPortfolio().find(x => String(x.id) === String(id));
+  if (!item) return;
+  document.getElementById('pmTitle').textContent = 'Edit Portfolio Photo';
+  document.getElementById('photoId').value = item.id;
+  document.getElementById('photoTitle').value = item.title;
+  document.getElementById('photoCategory').value = item.category || 'weddings';
+  document.getElementById('photoCatLabel').value = item.categoryLabel || 'Editorial';
+  document.getElementById('photoFormat').value = item.format || 'tall';
+  document.getElementById('photoLocation').value = item.location || '';
+  document.getElementById('photoYear').value = item.year || '2026';
+  document.getElementById('photoUrl').value = item.image;
+  
+  showPhotoPreview(item.image);
+  document.getElementById('photoModal').classList.add('on');
+}
+
+function autoFillCatLabel(cat) {
+  const map = {
+    weddings: 'Wedding Ceremony',
+    portraits: 'Editorial Portrait',
+    candid: 'Candid Couple Story',
+    'pre-wedding': 'Pre-Wedding Story',
+    engagement: 'Engagement Ceremony'
+  };
+  document.getElementById('photoCatLabel').value = map[cat] || cat;
+}
+
+function handlePhotoFile(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    currentPhotoBlobData = e.target.result;
+    document.getElementById('photoUrl').value = '';
+    showPhotoPreview(currentPhotoBlobData);
+  };
+  reader.readAsDataURL(file);
+}
+
+function handlePhotoUrlInput(url) {
+  if (url) {
+    currentPhotoBlobData = null;
+    showPhotoPreview(url);
+  }
+}
+
+function showPhotoPreview(src) {
+  const box = document.getElementById('photoPreviewBox');
+  const img = document.getElementById('photoPreviewImg');
+  img.src = src;
+  box.classList.add('on');
+}
+
+function removePhotoPreview() {
+  currentPhotoBlobData = null;
+  document.getElementById('photoPreviewBox').classList.remove('on');
+  document.getElementById('photoPreviewImg').src = '';
+  document.getElementById('photoFileInput').value = '';
+}
+
+function savePhoto(e) {
+  e.preventDefault();
+  const id = document.getElementById('photoId').value || 'p_' + Date.now();
+  const imageSrc = currentPhotoBlobData || document.getElementById('photoUrl').value.trim() || 'images/hero-slide-1.jpg';
+
+  const item = {
+    id,
+    title: document.getElementById('photoTitle').value.trim(),
+    category: document.getElementById('photoCategory').value,
+    categoryLabel: document.getElementById('photoCatLabel').value.trim(),
+    image: imageSrc,
+    fullImage: imageSrc,
+    format: document.getElementById('photoFormat').value,
+    location: document.getElementById('photoLocation').value.trim() || 'Studio Jeeva',
+    year: document.getElementById('photoYear').value.trim() || '2026'
+  };
+
+  const existing = JeevaDB.getPortfolio().find(x => String(x.id) === String(id));
+  if (existing) {
+    JeevaDB.updatePortfolioItem(id, item);
+    toast('Photo updated successfully');
+  } else {
+    JeevaDB.addPortfolioItem(item);
+    toast('Photo added to portfolio');
+  }
+
+  closeModal('photoModal');
+  renderPortfolioGrid();
+  renderDashboard();
+}
+
+function deletePhotoConfirm(id) {
+  if (!confirm('Are you sure you want to delete this photo from the portfolio?')) return;
+  JeevaDB.deletePortfolioItem(id);
+  renderPortfolioGrid();
+  renderDashboard();
+  toast('Photo deleted');
+}
+
+// 8. VIDEOS CONTROLLER (YOUTUBE, SHORTS, & PC VIDEOS)
+let currentVideoCategory = 'all';
+let currentVideoBlobData = null;
+let currentPosterBlobData = null;
+
+function parseAdminVideo(src) {
+  if (!src) return { type: 'none', url: '' };
+  const str = String(src).trim();
+  const ytMatch = str.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+  if (ytMatch && ytMatch[1]) {
+    const id = ytMatch[1];
+    return {
+      type: 'youtube',
+      id: id,
+      embedUrl: `https://www.youtube-nocookie.com/embed/${id}?autoplay=0&rel=0`,
+      thumbnail: `https://img.youtube.com/vi/${id}/hqdefault.jpg`
+    };
+  }
+  const vimeoMatch = str.match(/vimeo\.com\/(?:video\/)?([0-9]+)/i);
+  if (vimeoMatch && vimeoMatch[1]) {
+    return {
+      type: 'vimeo',
+      id: vimeoMatch[1],
+      embedUrl: `https://player.vimeo.com/video/${vimeoMatch[1]}`,
+      thumbnail: ''
+    };
+  }
+  return { type: 'direct', url: str };
+}
+
+function filterVideos(cat, btn) {
+  currentVideoCategory = cat;
+  document.querySelectorAll('#videoFilterPills .filter-pill').forEach(p => p.classList.remove('ac'));
+  if (btn) btn.classList.add('ac');
+  renderVideosGrid();
+}
+
+function renderVideosGrid() {
+  let list = JeevaDB.getVideos();
+  if (currentVideoCategory !== 'all') {
+    list = list.filter(v => v.category === currentVideoCategory);
+  }
+
+  const grid = document.getElementById('videosGrid');
+  if (!list.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--t2);padding:4rem">No cinematic films found. Click "+ Add Video Film" to create one!</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(v => {
+    const parsed = parseAdminVideo(v.videoSrc);
+    const poster = v.poster || (parsed.type === 'youtube' ? parsed.thumbnail : 'images/hero-slide-1.jpg');
+    
+    let mediaHtml = '';
+    if (parsed.type === 'youtube' || parsed.type === 'vimeo') {
+      mediaHtml = `
+        <div style="position:relative;width:100%;height:100%;background:#000;">
+          <img src="${escapeHtml(poster)}" alt="${escapeHtml(v.title)}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src='images/hero-slide-1.jpg'" />
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(212,180,131,0.9);display:flex;align-items:center;justify-content:center;color:var(--bg)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+          </div>
+          <span class="video-badge-tag">${parsed.type === 'youtube' ? 'YouTube' : 'Vimeo'} • ${escapeHtml(v.badge || '4K')}</span>
+        </div>
+      `;
+    } else {
+      mediaHtml = `
+        <video src="${escapeHtml(v.videoSrc)}" poster="${escapeHtml(poster)}" controls preload="metadata"></video>
+        <span class="video-badge-tag">${escapeHtml(v.badge || '4K Ultra HD')}</span>
+      `;
+    }
+
+    return `
+      <div class="video-admin-card">
+        <div class="video-preview-wrapper" style="aspect-ratio:16/9;background:#050704;position:relative;overflow:hidden">
+          ${mediaHtml}
+        </div>
+        <div class="gallery-card-body">
+          <div>
+            <span style="font-size:.74rem;color:var(--gold);font-weight:700;text-transform:uppercase">${escapeHtml(v.couple || 'Signature Film')}</span>
+            <h3 class="gallery-card-title" style="margin-top:.2rem">${escapeHtml(v.title)}</h3>
+            <p style="font-size:.8rem;color:var(--t2);line-height:1.5;margin-bottom:.8rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${escapeHtml(v.description || '')}</p>
+          </div>
+          <div class="gallery-card-actions">
+            <button class="bo bsm" style="flex:1" onclick="openEditVideo('${v.id}')">Edit</button>
+            <button class="bd bsm" onclick="deleteVideoConfirm('${v.id}')">Delete</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openAddVideo() {
+  document.getElementById('vmTitle').textContent = 'Add Cinematic Video Film';
+  document.getElementById('videoId').value = '';
+  document.getElementById('videoForm').reset();
+  removeVideoPreview();
+  document.getElementById('videoModal').classList.add('on');
+}
+
+function openEditVideo(id) {
+  const v = JeevaDB.getVideos().find(x => String(x.id) === String(id));
+  if (!v) return;
+  document.getElementById('vmTitle').textContent = 'Edit Cinematic Film';
+  document.getElementById('videoId').value = v.id;
+  document.getElementById('videoTitle').value = v.title;
+  document.getElementById('videoCouple').value = v.couple || '';
+  document.getElementById('videoCat').value = v.category || 'wedding-films';
+  document.getElementById('videoCatLabel').value = v.categoryLabel || '';
+  document.getElementById('videoBadge').value = v.badge || '4K Ultra HD';
+  document.getElementById('videoTag').value = v.tag || 'Royal Wedding';
+  document.getElementById('videoDesc').value = v.description || '';
+  document.getElementById('videoSrc').value = v.videoSrc || '';
+  document.getElementById('videoPoster').value = v.poster || '';
+
+  showVideoPreview(v.videoSrc);
+  document.getElementById('videoModal').classList.add('on');
+}
+
+function handleVideoFile(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    currentVideoBlobData = e.target.result;
+    document.getElementById('videoSrc').value = '';
+    showVideoPreview(currentVideoBlobData);
+  };
+  reader.readAsDataURL(file);
+}
+
+function handlePosterFile(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    currentPosterBlobData = e.target.result;
+    document.getElementById('videoPoster').value = currentPosterBlobData;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleVideoUrlInput(url) {
+  if (url) {
+    currentVideoBlobData = null;
+    showVideoPreview(url);
+    const parsed = parseAdminVideo(url);
+    if (parsed.type === 'youtube' && parsed.thumbnail) {
+      const posterInput = document.getElementById('videoPoster');
+      if (!posterInput.value || posterInput.value.includes('img.youtube.com') || posterInput.value.startsWith('images/')) {
+        posterInput.value = parsed.thumbnail;
+      }
+    }
+  }
+}
+
+function showVideoPreview(src) {
+  const box = document.getElementById('videoPreviewBox');
+  const videoEl = document.getElementById('videoPreviewEl');
+  const iframeEl = document.getElementById('videoPreviewIframe');
+  if (!src) return;
+
+  const parsed = parseAdminVideo(src);
+  if (parsed.type === 'youtube' || parsed.type === 'vimeo') {
+    videoEl.style.display = 'none';
+    videoEl.removeAttribute('src');
+    iframeEl.style.display = 'block';
+    iframeEl.src = parsed.embedUrl;
+  } else {
+    iframeEl.style.display = 'none';
+    iframeEl.removeAttribute('src');
+    videoEl.style.display = 'block';
+    videoEl.src = src;
+  }
+  box.classList.add('on');
+}
+
+function removeVideoPreview() {
+  currentVideoBlobData = null;
+  const box = document.getElementById('videoPreviewBox');
+  const videoEl = document.getElementById('videoPreviewEl');
+  const iframeEl = document.getElementById('videoPreviewIframe');
+  box.classList.remove('on');
+  videoEl.removeAttribute('src');
+  iframeEl.removeAttribute('src');
+  videoEl.style.display = 'none';
+  iframeEl.style.display = 'none';
+  document.getElementById('videoFileInput').value = '';
+}
+
+function saveVideo(e) {
+  e.preventDefault();
+  const id = document.getElementById('videoId').value || 'v_' + Date.now();
+  const rawVideoSrc = currentVideoBlobData || document.getElementById('videoSrc').value.trim() || 'https://youtube.com/shorts/4ZKaOwdho9k';
+  const parsed = parseAdminVideo(rawVideoSrc);
+  const defaultPoster = (parsed.type === 'youtube' ? parsed.thumbnail : 'images/portfolio-wedding-1.jpg');
+  const posterSrc = currentPosterBlobData || document.getElementById('videoPoster').value.trim() || defaultPoster;
+
+  const item = {
+    id,
+    title: document.getElementById('videoTitle').value.trim(),
+    couple: document.getElementById('videoCouple').value.trim(),
+    category: document.getElementById('videoCat').value,
+    categoryLabel: document.getElementById('videoCatLabel').value.trim() || 'Cinematic Film',
+    badge: document.getElementById('videoBadge').value.trim() || '4K Ultra HD',
+    tag: document.getElementById('videoTag').value.trim() || 'Wedding Highlights',
+    videoSrc: rawVideoSrc,
+    poster: posterSrc,
+    duration: 'Cinematic Highlights',
+    description: document.getElementById('videoDesc').value.trim(),
+    featured: false,
+    location: 'Studio Jeeva',
+    year: '2026'
+  };
+
+  const existing = JeevaDB.getVideos().find(x => String(x.id) === String(id));
+  if (existing) {
+    JeevaDB.updateVideoItem(id, item);
+    toast('Film updated successfully');
+  } else {
+    JeevaDB.addVideoItem(item);
+    toast('New cinematic film added');
+  }
+
+  closeModal('videoModal');
+  renderVideosGrid();
+  renderDashboard();
+}
+
+function deleteVideoConfirm(id) {
+  if (!confirm('Are you sure you want to delete this cinematic film?')) return;
+  JeevaDB.deleteVideoItem(id);
+  renderVideosGrid();
+  renderDashboard();
+  toast('Film deleted');
+}
+
+// 9. TESTIMONIALS CONTROLLER
+let currentAvatarBlobData = null;
+
+function renderTestimonialsGrid() {
+  const list = JeevaDB.getTestimonials();
+  const grid = document.getElementById('testimonialsGrid');
+  if (!list.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--t2);padding:4rem">No client reviews yet. Click "+ Add Review" to create one!</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(t => {
+    const starsStr = '★'.repeat(t.stars || 5) + '☆'.repeat(Math.max(0, 5 - (t.stars || 5)));
+    return `
+      <div class="test-card">
+        <div>
+          <div class="test-head">
+            <div class="test-avatar">
+              ${t.avatar ? `<img src="${escapeHtml(t.avatar)}" alt="${escapeHtml(t.name)}" />` : escapeHtml(t.name.charAt(0))}
+            </div>
+            <div>
+              <div class="test-name">${escapeHtml(t.name)}</div>
+              <div class="test-loc">${escapeHtml(t.location || '')}</div>
+            </div>
+          </div>
+          <div class="test-stars">${starsStr}</div>
+          <p class="test-body">${escapeHtml(t.text)}</p>
+        </div>
+        <div class="test-actions">
+          <button class="bo bsm" style="flex:1" onclick="openEditTestimonial(${t.id})">Edit</button>
+          <button class="bd bsm" onclick="deleteTestimonialConfirm(${t.id})">Delete</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openAddTestimonial() {
+  document.getElementById('tmTitle').textContent = 'Add Client Review';
+  document.getElementById('testId').value = '';
+  document.getElementById('testForm').reset();
+  currentAvatarBlobData = null;
+  document.getElementById('testModal').classList.add('on');
+}
+
+function openEditTestimonial(id) {
+  const t = JeevaDB.getTestimonials().find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('tmTitle').textContent = 'Edit Client Review';
+  document.getElementById('testId').value = t.id;
+  document.getElementById('testName').value = t.name;
+  document.getElementById('testLoc').value = t.location;
+  document.getElementById('testText').value = t.text;
+  document.getElementById('testStars').value = t.stars || 5;
+  currentAvatarBlobData = t.avatar || null;
+  document.getElementById('testModal').classList.add('on');
+}
+
+function handleAvatarFile(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => { currentAvatarBlobData = e.target.result; };
+  reader.readAsDataURL(file);
+}
+
+function saveTestimonial(e) {
+  e.preventDefault();
+  const id = document.getElementById('testId').value ? parseInt(document.getElementById('testId').value) : Date.now();
+  const item = {
+    id,
+    name: document.getElementById('testName').value.trim(),
+    location: document.getElementById('testLoc').value.trim(),
+    text: document.getElementById('testText').value.trim(),
+    stars: parseInt(document.getElementById('testStars').value, 10),
+    avatar: currentAvatarBlobData || ''
+  };
+
+  const existing = JeevaDB.getTestimonials().find(x => x.id === id);
+  if (existing) {
+    JeevaDB.updateTestimonial(id, item);
+    toast('Review updated successfully');
+  } else {
+    JeevaDB.addTestimonial(item);
+    toast('New review added');
+  }
+
+  closeModal('testModal');
+  renderTestimonialsGrid();
+}
+
+function deleteTestimonialConfirm(id) {
+  if (!confirm('Are you sure you want to delete this review?')) return;
+  JeevaDB.deleteTestimonial(id);
+  renderTestimonialsGrid();
+  toast('Review deleted');
+}
+
+// 10. PACKAGES CONTROLLER
+let currentAdminPackageCat = 'all';
+
+function filterAdminPackages(cat, btn) {
+  currentAdminPackageCat = cat;
+  document.querySelectorAll('#packageFilterPills .filter-pill').forEach(p => p.classList.remove('ac'));
+  if (btn) btn.classList.add('ac');
+  renderPackagesGrid();
+}
+
+function renderPackagesGrid() {
+  let list = JeevaDB.getPackages();
+  if (currentAdminPackageCat !== 'all') {
+    list = list.filter(pkg => (pkg.category || 'Engagement & Wedding') === currentAdminPackageCat);
+  }
+
+  const grid = document.getElementById('packagesGrid');
+  if (!list.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--t2);padding:4rem">No packages found for this collection.</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(pkg => `
+    <div class="pkg-admin-card ${pkg.isPopular ? 'popular' : ''}">
+      ${pkg.isPopular ? '<span class="pkg-pop-badge">Most Popular</span>' : ''}
+      <h3 class="pkg-title">${escapeHtml(pkg.scriptTitle || pkg.title)}</h3>
+      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase;margin-bottom:0.5rem">${escapeHtml(pkg.subtitle || pkg.category || 'WEDDING')}</div>
+      <div class="pkg-price"><span>Rs</span>${escapeHtml(pkg.price)}</div>
+      <ul class="pkg-features">
+        ${(pkg.features || []).map(f => `<li>${escapeHtml(f)}</li>`).join('')}
+      </ul>
+      <div class="gallery-card-actions">
+        <button class="bo bsm" style="flex:1" onclick="openEditPackage('${pkg.id}')">Edit Package</button>
+        <button class="bd bsm" onclick="deletePackageConfirm('${pkg.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openAddPackage() {
+  document.getElementById('pkmTitle').textContent = 'Add Photography Package';
+  document.getElementById('pkgId').value = '';
+  document.getElementById('pkgForm').reset();
+  document.getElementById('pkgCategory').value = currentAdminPackageCat !== 'all' ? currentAdminPackageCat : 'Wedding';
+  document.getElementById('pkgSubtitle').value = document.getElementById('pkgCategory').value.toUpperCase();
+  document.getElementById('pkgModal').classList.add('on');
+}
+
+function openEditPackage(id) {
+  const pkg = JeevaDB.getPackages().find(x => String(x.id) === String(id));
+  if (!pkg) return;
+  document.getElementById('pkmTitle').textContent = 'Edit Photography Package';
+  document.getElementById('pkgId').value = pkg.id;
+  document.getElementById('pkgTitle').value = pkg.title;
+  document.getElementById('pkgScriptTitle').value = pkg.scriptTitle || pkg.title;
+  document.getElementById('pkgCategory').value = pkg.category || 'Wedding';
+  document.getElementById('pkgSubtitle').value = pkg.subtitle || pkg.category || 'WEDDING';
+  document.getElementById('pkgPrice').value = pkg.price;
+  document.getElementById('pkgBadge').value = pkg.badge || '';
+  document.getElementById('pkgIsPopular').value = pkg.isPopular ? 'true' : 'false';
+  document.getElementById('pkgMainImage').value = pkg.mainImage || '';
+  document.getElementById('pkgFeatures').value = (pkg.features || []).join('\n');
+  document.getElementById('pkgModal').classList.add('on');
+}
+
+function savePackage(e) {
+  e.preventDefault();
+  const id = document.getElementById('pkgId').value || 'pkg_' + Date.now();
+  const features = document.getElementById('pkgFeatures').value
+    .split('\n')
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  const existing = JeevaDB.getPackages().find(x => String(x.id) === String(id)) || {};
+
+  const cat = document.getElementById('pkgCategory').value;
+  const sub = document.getElementById('pkgSubtitle').value.trim() || cat.toUpperCase();
+
+  const item = {
+    ...existing,
+    id,
+    title: document.getElementById('pkgTitle').value.trim(),
+    scriptTitle: document.getElementById('pkgScriptTitle').value.trim(),
+    subtitle: sub,
+    category: cat,
+    price: document.getElementById('pkgPrice').value.trim(),
+    currency: 'Rs',
+    badge: document.getElementById('pkgBadge').value.trim() || 'PROMESSE',
+    isPopular: document.getElementById('pkgIsPopular').value === 'true',
+    popularBadge: 'Most Popular',
+    mainImage: document.getElementById('pkgMainImage').value.trim() || 'images/hero-slide-2.jpg',
+    thumbImage: existing.thumbImage || 'images/hero-slide-1.jpg',
+    features
+  };
+
+  if (existing.id) {
+    JeevaDB.updatePackage(id, item);
+    toast('Package updated successfully');
+  } else {
+    JeevaDB.addPackage(item);
+    toast('New package added');
+  }
+
+  closeModal('pkgModal');
+  renderPackagesGrid();
+}
+
+function deletePackageConfirm(id) {
+  if (!confirm('Are you sure you want to delete this package?')) return;
+  JeevaDB.deletePackage(id);
+  renderPackagesGrid();
+  toast('Package deleted');
+}
+
+// 11. SETTINGS & FULL BACKUP
+function loadSettingsValues() {
+  const s = JeevaDB.getSettings();
+  if (s.name) document.getElementById('st_n').value = s.name;
+  if (s.phone) document.getElementById('st_p').value = s.phone;
+  if (s.email) document.getElementById('st_e').value = s.email;
+  if (s.instagram) document.getElementById('st_i').value = s.instagram;
+  if (s.address) document.getElementById('st_a').value = s.address;
+  if (s.hours) document.getElementById('st_h').value = s.hours;
+  if (s.yearsExp) document.getElementById('st_y').value = s.yearsExp;
+  if (s.happyClients) document.getElementById('st_c').value = s.happyClients;
+  if (s.momentsCaptured) document.getElementById('st_m').value = s.momentsCaptured;
+}
+
+function saveStudioSettings() {
+  const settings = {
+    name: document.getElementById('st_n').value.trim(),
+    phone: document.getElementById('st_p').value.trim(),
+    whatsapp: document.getElementById('st_p').value.trim(),
+    email: document.getElementById('st_e').value.trim(),
+    instagram: document.getElementById('st_i').value.trim(),
+    address: document.getElementById('st_a').value.trim(),
+    hours: document.getElementById('st_h').value.trim(),
+    yearsExp: document.getElementById('st_y').value.trim(),
+    happyClients: document.getElementById('st_c').value.trim(),
+    momentsCaptured: document.getElementById('st_m').value.trim()
+  };
+  JeevaDB.saveSettings(settings);
+  toast('Studio settings saved');
+}
+
+function changeAdminPassword() {
+  const c = document.getElementById('cp').value;
+  const n = document.getElementById('np').value;
+  const cnp = document.getElementById('cnp').value;
+  const auth = JeevaDB.getAuth();
+
+  if (c !== auth.password) { toast('Current password incorrect'); return; }
+  if (!n || n.length < 6) { toast('New password must be at least 6 characters'); return; }
+  if (n !== cnp) { toast('New passwords do not match'); return; }
+
+  JeevaDB.setAuth(auth.username, n);
+  document.getElementById('cp').value = '';
+  document.getElementById('np').value = '';
+  document.getElementById('cnp').value = '';
+  toast('Password updated successfully');
+}
+
+function exportFullBackupJSON() {
+  const backup = JeevaDB.exportFullBackup();
+  const jsonStr = JSON.stringify(backup, null, 2);
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `jeeva_photography_backup_${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Full website backup exported to JSON');
+}
+
+function importFullBackupJSON(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      JeevaDB.importFullBackup(data);
+      toast('Full backup restored successfully!');
+      initAdmin();
+    } catch (err) {
+      alert('Error parsing JSON backup file: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetDefaultsConfirm() {
+  if (!confirm('Reset all website content (Home, About, Portfolio, Videos, Packages, Reviews) to default samples? Your custom edits will be replaced.')) return;
+  JeevaDB.resetToDefaults();
+  initAdmin();
+  toast('Reset to default samples completed');
+}
+
+// UTILITIES
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function initAdmin() {
+  renderDashboard();
+  loadHomeValues();
+  loadAboutValues();
+  renderEnquiries();
+  renderPortfolioGrid();
+  renderVideosGrid();
+  renderTestimonialsGrid();
+  renderPackagesGrid();
+  loadSettingsValues();
+}
+</script>
+
+<!-- FLOATING SOCIAL SIDEBAR -->
+<div class="social-sidebar" id="adminSocialSidebar" aria-label="Social Media Quick Links">
+  <div>
+    <a href="tel:+919514751045" class="social-sidebar-link ss-phone" data-tooltip="+91 95147 51045" aria-label="Call" id="adminSidebarPhone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.57 3.4 2 2 0 0 1 3.54 1h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.5a16 16 0 0 0 6 6l.86-.86a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    </a>
+  </div>
+  <div>
+    <a href="https://wa.me/919514751045?text=Hi%20Jeeva%20Photography!" target="_blank" rel="noopener" class="social-sidebar-link ss-wp" data-tooltip="WhatsApp" aria-label="WhatsApp" id="adminSidebarWA">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    </a>
+  </div>
+  <div>
+    <a href="https://www.instagram.com/jeeva_photography_official" target="_blank" rel="noopener" class="social-sidebar-link ss-insta" data-tooltip="Instagram" aria-label="Instagram" id="adminSidebarInsta">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    </a>
+  </div>
+  <div>
+    <a href="https://youtube.com/@jeevabcom21" target="_blank" rel="noopener" class="social-sidebar-link ss-youtube" data-tooltip="YouTube" aria-label="YouTube" id="adminSidebarYT">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

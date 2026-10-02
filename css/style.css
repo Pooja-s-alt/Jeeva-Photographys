@@ -520,7 +520,7 @@ ul, ol {
 
 .hero-img-portrait,
 .hero-slide:nth-child(3) .hero-bg-img {
-  object-position: 72% 35%;
+  object-position: 82% 30%;
 }
 
 .hero-overlay {
@@ -2794,7 +2794,7 @@ ul, ol {
   }
   .hero-img-portrait,
   .hero-slide:nth-child(3) .hero-bg-img {
-    object-position: 72% 35% !important;
+    object-position: 82% 28% !important;
   }
 
   /* Hero section full width on mobile */
@@ -2871,7 +2871,7 @@ ul, ol {
   }
   .hero-img-portrait,
   .hero-slide:nth-child(3) .hero-bg-img {
-    object-position: 72% 35% !important;
+    object-position: 84% 28% !important;
   }
   .hero-title {
     font-size: clamp(1.85rem, 6.5vw, 2.3rem);

@@ -504,23 +504,23 @@ ul, ol {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 25%;
-  filter: brightness(0.88) contrast(1.05);
+  object-position: center center;
+  filter: brightness(0.92) contrast(1.05);
 }
 
 .hero-img-couple,
 .hero-slide:nth-child(1) .hero-bg-img {
-  object-position: 20% 20%;
+  object-position: 50% 18%;
 }
 
 .hero-img-bridal,
 .hero-slide:nth-child(2) .hero-bg-img {
-  object-position: 50% 20%;
+  object-position: 52% 40%;
 }
 
 .hero-img-portrait,
 .hero-slide:nth-child(3) .hero-bg-img {
-  object-position: 45% 20%;
+  object-position: 72% 35%;
 }
 
 .hero-overlay {
@@ -531,10 +531,10 @@ ul, ol {
   height: 100%;
   background: linear-gradient(
     180deg, 
-    rgba(34, 44, 33, 0.52) 0%, 
-    rgba(61, 75, 59, 0.2) 40%, 
-    rgba(44, 56, 43, 0.7) 80%, 
-    rgba(61, 75, 59, 0.98) 100%
+    rgba(20, 28, 19, 0.42) 0%, 
+    rgba(34, 44, 33, 0.2) 35%, 
+    rgba(25, 34, 24, 0.55) 75%, 
+    rgba(20, 28, 19, 0.92) 100%
   );
   z-index: 3;
 }
@@ -2783,72 +2783,106 @@ ul, ol {
     left: 0;
   }
 
-  /* Hero Mobile Framing - Ensure both couple subjects are visible */
+  /* Hero Mobile Framing - Ensure both couple subjects are perfectly visible */
   .hero-img-couple,
   .hero-slide:nth-child(1) .hero-bg-img {
-    object-position: 15% 12% !important;
+    object-position: 50% 18% !important;
   }
   .hero-img-bridal,
   .hero-slide:nth-child(2) .hero-bg-img {
-    object-position: 50% 15% !important;
+    object-position: 52% 40% !important;
   }
   .hero-img-portrait,
   .hero-slide:nth-child(3) .hero-bg-img {
-    object-position: 42% 15% !important;
+    object-position: 72% 35% !important;
   }
 
   /* Hero section full width on mobile */
   .hero-section {
     min-height: 100vh;
     min-height: 100dvh;
-    padding-top: 5rem;
-    padding-bottom: 3rem;
+    padding-top: 5.5rem;
+    padding-bottom: 3.5rem;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .hero-content {
     width: 100%;
-    padding-left: 1rem;
-    padding-right: 3.5rem; /* Space for social sidebar */
-    max-width: 100%;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+    max-width: 500px;
+    margin: 0 auto;
   }
   .hero-title {
-    font-size: clamp(2.2rem, 7vw, 3.2rem);
-    word-break: keep-all;
+    font-size: clamp(2.1rem, 6.8vw, 2.8rem);
+    line-height: 1.15;
+    margin-bottom: 0.85rem;
+  }
+  .hero-divider {
+    margin: 0.85rem auto 1.1rem;
+    width: 70px;
   }
   .hero-subtitle {
-    font-size: 0.95rem;
-    padding-right: 0.5rem;
-  }
-  .hero-trust-bar {
-    gap: 1rem;
-    padding: 0.75rem 1rem;
-    flex-wrap: wrap;
-    max-width: calc(100% - 3.5rem);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin: 0 auto 1.6rem;
+    max-width: 100%;
   }
   .hero-buttons {
-    gap: 0.8rem;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    padding-right: 3rem;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0;
   }
   .hero-buttons .btn {
     width: 100%;
-    max-width: 280px;
+    max-width: 290px;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.84rem;
+  }
+  .hero-trust-bar {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    margin-top: 2rem;
+    max-width: 100%;
+    justify-content: space-around;
+  }
+  .trust-num {
+    font-size: 1.15rem;
+  }
+  .trust-lbl {
+    font-size: 0.65rem;
   }
 }
 
 @media (max-width: 480px) {
   .hero-img-couple,
   .hero-slide:nth-child(1) .hero-bg-img {
-    object-position: 10% 10% !important;
+    object-position: 50% 16% !important;
   }
   .hero-img-bridal,
   .hero-slide:nth-child(2) .hero-bg-img {
-    object-position: 50% 10% !important;
+    object-position: 52% 40% !important;
   }
   .hero-img-portrait,
   .hero-slide:nth-child(3) .hero-bg-img {
-    object-position: 40% 10% !important;
+    object-position: 72% 35% !important;
+  }
+  .hero-title {
+    font-size: clamp(1.85rem, 6.5vw, 2.3rem);
+  }
+  .hero-content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .hero-trust-bar {
+    gap: 0.5rem;
+    padding: 0.55rem 0.75rem;
   }
   .packages-grid {
     gap: 1.8rem !important;

@@ -66,6 +66,8 @@
       z-index: 9999;
       transition: opacity 0.5s ease;
       padding: 1.5rem;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     #ls.h { opacity: 0; pointer-events: none; }
     .lb {
@@ -78,6 +80,7 @@
       text-align: center;
       box-shadow: 0 10px 60px rgba(0,0,0,0.6), 0 0 80px rgba(212, 180, 131, 0.08);
       position: relative;
+      margin: auto;
     }
     .la {
       width: 74px;
@@ -105,7 +108,7 @@
       border: 1px solid var(--bdr);
       border-radius: var(--rs);
       color: var(--t);
-      font-size: 0.95rem;
+      font-size: 16px;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
@@ -881,16 +884,225 @@
     }
     #atst.on { transform: translateY(0); opacity: 1; }
 
+    /* SIDEBAR MOBILE CONTROLS */
+    .sb-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 998;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .sb-backdrop.show {
+      display: block;
+      opacity: 1;
+    }
+    .sb-close-btn {
+      display: none;
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--bdr);
+      color: var(--t2);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: all 0.2s;
+    }
+    .sb-close-btn:hover {
+      color: var(--t);
+      background: var(--reds);
+      border-color: var(--red);
+    }
+    .sb-toggle-btn {
+      display: none;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(212, 180, 131, 0.12);
+      border: 1px solid var(--bdr2);
+      color: var(--gold);
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--rs);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sb-toggle-btn:hover {
+      background: rgba(212, 180, 131, 0.25);
+      color: var(--t);
+    }
+
     @media (max-width: 1100px) {
       .sr { grid-template-columns: repeat(2, 1fr); }
       .qa { grid-template-columns: 1fr 1fr; }
     }
-    @media (max-width: 768px) {
-      .sb { transform: translateX(-100%); transition: transform 0.3s; }
-      .sb.open { transform: translateX(0); }
-      .mc { margin-left: 0; }
-      .sr, .fr, .qa { grid-template-columns: 1fr; }
-      .pc { padding: 1.2rem; }
+
+    @media (max-width: 991px) {
+      .sb {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        max-width: 86vw;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.85);
+      }
+      .sb.open {
+        transform: translateX(0);
+      }
+      .sb-close-btn {
+        display: flex;
+      }
+      .sb-toggle-btn {
+        display: inline-flex;
+      }
+      .mc {
+        margin-left: 0 !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+      .tb {
+        padding: 0.7rem 1rem;
+        height: auto;
+        min-height: 58px;
+      }
+      .tbt {
+        font-size: 1.25rem;
+      }
+      .pc {
+        padding: 1.2rem 1rem;
+      }
+      .sr {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.85rem;
+      }
+      .qa {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+      .sh {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      .sha {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .fr {
+        grid-template-columns: 1fr !important;
+        gap: 0.85rem;
+      }
+      .filter-bar {
+        display: flex;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0.5rem;
+        scrollbar-width: none;
+        gap: 0.5rem;
+      }
+      .filter-bar::-webkit-scrollbar {
+        display: none;
+      }
+      .filter-pill {
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .social-sidebar {
+        display: none !important;
+      }
+      .mb {
+        padding: 1.5rem 1.1rem;
+        max-height: 90vh;
+        width: 100%;
+        border-radius: 16px;
+      }
+      .fc, textarea.fc, select.fc {
+        font-size: 16px !important;
+      }
+      .video-grid, .pkg-admin-grid, .test-grid {
+        grid-template-columns: 1fr;
+      }
+      .gallery-admin-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.75rem;
+      }
+      .et-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    @media (max-width: 540px) {
+      #ls {
+        padding: 1rem;
+      }
+      .lb {
+        padding: 2.2rem 1.2rem;
+        border-radius: 18px;
+      }
+      .lt {
+        font-size: 1.65rem;
+      }
+      .ls2 {
+        margin-bottom: 1.5rem;
+      }
+      .la {
+        width: 58px;
+        height: 58px;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      .tb {
+        padding: 0.6rem 0.85rem;
+      }
+      .tbt {
+        font-size: 1.1rem;
+      }
+      .tbr .tbb {
+        padding: 0.3rem 0.55rem;
+        font-size: 0.72rem;
+      }
+      .vsb {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.78rem;
+      }
+      .vsb span {
+        display: none;
+      }
+      .sr {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.65rem;
+      }
+      .sx {
+        padding: 0.95rem 0.85rem;
+      }
+      .sxl {
+        font-size: 0.7rem;
+      }
+      .sxv {
+        font-size: 1.55rem;
+      }
+      .sxs {
+        font-size: 0.72rem;
+      }
+      .gallery-admin-grid {
+        grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+        gap: 0.6rem;
+      }
     }
 
     /* === FLOATING SOCIAL SIDEBAR === */
@@ -925,6 +1137,10 @@
         <input class="li" type="password" id="lp" placeholder="••••••••" autocomplete="current-password" required />
       </div>
       <button type="submit" class="lbt" id="lbn">Sign In to Dashboard</button>
+      <button type="button" class="btn-quick-login" onclick="quickFillAndLogin()" style="width: 100%; margin-top: 0.75rem; background: rgba(212,180,131,0.12); border: 1px solid var(--bdr2); color: var(--gold); padding: 0.75rem; border-radius: var(--rs); font-size: 0.84rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.45rem; transition: all 0.2s;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        1-Tap Quick Sign In (Default)
+      </button>
     </form>
     <div class="ler" id="ler">Incorrect username or password. Please try again.</div>
     <div class="login-hint">Default: <strong>admin</strong> / <strong>jeeva2024</strong></div>
@@ -934,6 +1150,9 @@
 <!-- APP WRAPPER -->
 <div id="app">
 
+  <!-- MOBILE SIDEBAR BACKDROP -->
+  <div class="sb-backdrop" id="sbBackdrop" onclick="toggleMobileSidebar(false)"></div>
+
   <!-- SIDEBAR NAVIGATION -->
   <aside class="sb">
     <div class="sbl">
@@ -942,6 +1161,7 @@
         <span class="sbt">Jeeva Studio</span>
         <span class="sbs">Control Centre</span>
       </div>
+      <button class="sb-close-btn" id="sbCloseBtn" onclick="toggleMobileSidebar(false)" aria-label="Close Navigation Menu">✕</button>
     </div>
     <nav class="sbn">
       <div class="ns">Overview</div>
@@ -1008,6 +1228,10 @@
     <!-- TOPBAR -->
     <header class="tb">
       <div class="tb-left">
+        <button class="sb-toggle-btn" id="sbToggleBtn" onclick="toggleMobileSidebar(true)" aria-label="Open Navigation Menu">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <span>Menu</span>
+        </button>
         <span class="tbt" id="tbt">Dashboard</span>
       </div>
       <div class="tbr">
@@ -1918,8 +2142,33 @@
 <script>
 /* ADMIN CONTROLLER SCRIPT */
 
+// Mobile Sidebar Controller
+function toggleMobileSidebar(show) {
+  const sb = document.querySelector('.sb');
+  const backdrop = document.getElementById('sbBackdrop');
+  if (!sb || !backdrop) return;
+  const shouldOpen = show !== undefined ? show : !sb.classList.contains('open');
+  if (shouldOpen) {
+    sb.classList.add('open');
+    backdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  } else {
+    sb.classList.remove('open');
+    backdrop.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+}
+
 // 1. AUTHENTICATION & LOGIN
 const loginForm = document.getElementById('loginForm');
+
+function quickFillAndLogin() {
+  const auth = JeevaDB.getAuth();
+  document.getElementById('lu').value = auth.username || 'admin';
+  document.getElementById('lp').value = auth.password || 'jeeva2024';
+  handleLogin();
+}
+
 function handleLogin(e) {
   if (e) e.preventDefault();
   const auth = JeevaDB.getAuth();
@@ -1927,6 +2176,7 @@ function handleLogin(e) {
   const p = document.getElementById('lp').value;
 
   if (u === auth.username && p === auth.password) {
+    localStorage.setItem('jp_admin_session', 'active');
     document.getElementById('ler').classList.remove('on');
     document.getElementById('ls').classList.add('h');
     setTimeout(() => {
@@ -1942,6 +2192,7 @@ function handleLogin(e) {
 }
 
 document.getElementById('lobtn').onclick = () => {
+  localStorage.removeItem('jp_admin_session');
   document.getElementById('app').classList.remove('on');
   const ls = document.getElementById('ls');
   ls.style.display = 'flex';
@@ -1949,7 +2200,22 @@ document.getElementById('lobtn').onclick = () => {
   ls.classList.remove('h');
   document.getElementById('lu').value = '';
   document.getElementById('lp').value = '';
+  toggleMobileSidebar(false);
 };
+
+// Check for existing active session on page load
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('jp_admin_session') === 'active') {
+    const ls = document.getElementById('ls');
+    if (ls) {
+      ls.style.display = 'none';
+      ls.classList.add('h');
+    }
+    const app = document.getElementById('app');
+    if (app) app.classList.add('on');
+    initAdmin();
+  }
+});
 
 // 2. TAB NAVIGATION
 const PAGE_TITLES = {
@@ -1965,6 +2231,9 @@ const PAGE_TITLES = {
 };
 
 function go(pageId) {
+  // Automatically close sidebar drawer on mobile
+  toggleMobileSidebar(false);
+
   document.querySelectorAll('.pn').forEach(p => p.classList.remove('ac'));
   document.querySelectorAll('.sl').forEach(l => l.classList.remove('ac'));
   
